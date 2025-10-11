@@ -1,12 +1,12 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
-const Cart = () => {
+const Blogs = () => {
   return (
     <div>
         <Navbar />
-      <h1>i am cart</h1>
+      <h1 className='font-[syne]'>i am blog</h1>
     </div>
   )
 }
 
-export default Cart
+export default Blogs
