@@ -1,62 +1,48 @@
-import React from 'react'
-import { FaSearch, FaUser } from 'react-icons/fa'
-import { FaShoppingCart } from "react-icons/fa";
-import logo from '../assets/logo.png';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react'
+import { FaSearch, FaUser, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa'
+import logo from '../assets/logo.png'
+import { NavLink } from 'react-router-dom'
+
+const navLinks = [
+  { to: '/', label: 'Home', end: true },
+  { to: '/books', label: 'Books' },
+  { to: '/blogs', label: 'Blogs' },
+  { to: '/about', label: 'About' },
+]
 
 const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const linkClass = ({ isActive }) =>
+    isActive
+      ? "text-yellow-500 font-bold"
+      : "hover:text-orange-500 transition"
+
   return (
-    <nav className="w-full bg-white shadow-md py-1 px-6 flex flex-wrap items-center justify-between">
+    <nav className="w-full bg-white shadow-md py-1 px-6 flex items-center justify-between relative">
       {/* Logo */}
-      <div className="w-13 h-13 ">
+      <div className="w-13 h-13">
         <img src={logo} alt="logo..." />
       </div>
 
+      {/* Hamburger */}
+      <button
+        className="md:hidden text-2xl text-gray-700"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle navigation"
+      >
+        {menuOpen ? <FaTimes /> : <FaBars />}
+      </button>
+
       {/* Navigation Links */}
-      <ul className="hidden md:flex gap-6 font-[syne] text-gray-700">
-        <li>
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive ? "text-yellow-500 font-bold" : "hover:text-orange-500 transition"
-            }
-            end
-          >
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/books"
-            className={({ isActive }) =>
-              isActive ? "text-yellow-500 font-bold" : "hover:text-orange-500 transition"
-            }
-          >
-            Books
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/blogs"
-            className={({ isActive }) =>
-              isActive ? "text-yellow-500 font-bold" : "hover:text-orange-500 transition"
-            }
-          >
-            Blogs
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              isActive ? "text-yellow-500 font-bold" : "hover:text-orange-500 transition"
-            }
-          >
-            About
-          </NavLink>
-        </li>
-        <li>
-        </li>
+      <ul className={`flex-col md:flex-row md:flex gap-6 font-[syne] text-gray-700 absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent z-10 transition-all duration-300 ${menuOpen ? 'flex' : 'hidden'}`}>
+        {navLinks.map(({ to, label, end }) => (
+          <li key={to}>
+            <NavLink to={to} className={linkClass} end={end}>
+              {label}
+            </NavLink>
+          </li>
+        ))}
       </ul>
 
       {/* Search Bar */}
@@ -73,14 +59,11 @@ const Navbar = () => {
 
       {/* Cart and User Section */}
       <div className="flex items-center gap-5 mt-3 md:mt-0">
-        {/* Cart */}
         <NavLink to='/cart' className="relative border-2 border-gray-300 rounded-full p-2 cursor-pointer hover:border-orange-500 transition">
           <FaShoppingCart className="text-amber-400 text-xl" />
         </NavLink>
-
-        {/* User */}
         <div className="flex items-center gap-2 cursor-pointer">
-          <FaUser className="text-2xl text-gray-700" /> 
+          <FaUser className="text-2xl text-gray-700" />
         </div>
       </div>
     </nav>
