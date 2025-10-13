@@ -25,23 +25,23 @@ const Hero = () => {
       {/* Left Side - Text Content */}
       <div className="w-full lg:w-1/2 text-center lg:text-left space-y-6">
         <motion.p
-          className="text-yellow-400 font-semibold text-lg"
+          className="text-[#BF092F] font-[syne] font-semibold text-3xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
+          transition={{ duration: 0.9, delay: 0.2 }}
         >
-          YOUR NEXT ADVENTURE STARTS HERE
+          Dust On Books
         </motion.p>
 
         <motion.h1
-          className="text-4xl sm:text-6xl font-extrabold leading-tight text-[#BF092F]"
+          className="text-4xl sm:text-5xl  font-extrabold leading-tight text-[#BF092F]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.4 }}
         >
           <span className="bg-yellow-400 text-white px-3 py-1 rounded-lg shadow-md inline-block">
             {headline}
-            <span className="animate-pulse">|</span>
+          
           </span>
         </motion.h1>
 

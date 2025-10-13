@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { FaSearch, FaUser, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa'
+import { FaSearch, FaUserCircle, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa'
 import logo from '../assets/logo.png'
 import { NavLink } from 'react-router-dom'
+import UserModal from "../components/UserModal"
 
 const navLinks = [
   { to: '/', label: 'Home', end: true },
@@ -12,6 +13,7 @@ const navLinks = [
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [open, setOpen] = useState(false)
 
   const linkClass = ({ isActive }) =>
     isActive
@@ -62,9 +64,14 @@ const Navbar = () => {
         <NavLink to='/cart' className="relative border-2 border-gray-300 rounded-full p-2 cursor-pointer hover:border-orange-500 transition">
           <FaShoppingCart className="text-amber-400 text-xl" />
         </NavLink>
-        <div className="flex items-center gap-2 cursor-pointer">
-          <FaUser className="text-2xl text-gray-700" />
+        <div
+          className="cursor-pointer text-gray-700 hover:text-orange-500 transition"
+          onClick={() => setOpen(true)}
+        >
+          <FaUserCircle size={34} />
         </div>
+        {/* Modal imported */}
+        <UserModal open={open} handleClose={() => setOpen(false)} />
       </div>
     </nav>
   )
