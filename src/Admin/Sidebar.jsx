@@ -1,13 +1,14 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaBookOpen, FaFileAlt, FaShoppingCart, FaChartBar, FaHome } from "react-icons/fa";
+import { FaBookOpen, FaFileAlt, FaShoppingCart, FaChartBar, FaHome, FaList} from "react-icons/fa";
 
 const Sidebar = () => {
   const { pathname } = useLocation();
 
   const links = [
     { path: "/admin/analytics", label: "Analytics", icon: <FaChartBar size={18} /> },
-    { path: "/admin/books", label: "Books", icon: <FaBookOpen size={18} /> },
+    { path: "/admin/books", label: "Add Book", icon: <FaBookOpen size={18} /> },
+    { path: "booklist", label: "Book List", icon: <FaList size={18} /> },
     { path: "/admin/blogs", label: "Blogs", icon: <FaFileAlt size={18} /> },
     { path: "/admin/orders", label: "Orders", icon: <FaShoppingCart size={18} /> },
 

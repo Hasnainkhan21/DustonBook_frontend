@@ -14,7 +14,7 @@ import Adminorders from './Admin/pages/Adminorders'
 import Analytics from './Admin/pages/Analytics'
 import Adminbooks from './Admin/pages/Adminbooks'
 import Adminblogs from './Admin/pages/Adminblogs'
-
+import AdminBookList from './Admin/pages/AdminBookList'
 
 function App() {
   return (
@@ -36,6 +36,7 @@ function App() {
         <Route path="blogs" element={<Adminblogs />} />
         <Route path="orders" element={<Adminorders />} />
         <Route path="analytics" element={<Analytics />} />
+        <Route path="booklist" element={<AdminBookList />} />
       </Route>
       </Routes>
 
