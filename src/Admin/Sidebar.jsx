@@ -9,10 +9,10 @@ const Sidebar = () => {
     { path: "/admin/analytics", label: "Analytics", icon: <FaChartBar size={18} /> },
     { path: "/admin/books", label: "Add Book", icon: <FaBookOpen size={18} /> },
     { path: "booklist", label: "Book List", icon: <FaList size={18} /> },
-    { path: "/admin/blogs", label: "Blogs", icon: <FaFileAlt size={18} /> },
+    { path: "/admin/blogs", label: "Add Blog", icon: <FaFileAlt size={18} /> },
     { path: "/admin/orders", label: "Orders", icon: <FaShoppingCart size={18} /> },
-
-  ];
+    {path : "blogslist", label: "Blog List", icon: <FaList size={18} /> },
+  ];  
 
   return (
     <div className="w-64 bg-white shadow-md min-h-screen p-5">

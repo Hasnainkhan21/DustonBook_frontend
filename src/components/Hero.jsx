@@ -30,7 +30,7 @@ const Hero = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.9, delay: 0.2 }}
         >
-          Dust On Books
+          Dust On Book
         </motion.p>
 
         <motion.h1

@@ -55,7 +55,7 @@ const BookList = () => {
           <p className="text-sm text-gray-500">
             Stock: {book.stock > 0 ? book.stock : "Out of stock"}
           </p>
-        </div>
+        </div>      
       ))}
     </div>
   );
