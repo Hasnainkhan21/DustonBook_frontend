@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { getBlogs } from "../Services/blogService";
 import BlogCard from "../components/BlogCard";
 import { CircularProgress } from "@mui/material";
-import Navbar from "../components/Navbar";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -36,8 +35,7 @@ const Blogs = () => {
 
   return (
     <section>
-      <Navbar />
-    <div className="container mx-auto px-4 py-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="container mx-auto px-4 py-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {blogs.length > 0 ? (
         blogs.map((blog) => <BlogCard key={blog._id || blog.id} blog={blog} />)
       ) : (

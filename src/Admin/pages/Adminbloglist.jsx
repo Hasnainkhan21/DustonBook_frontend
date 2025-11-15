@@ -36,7 +36,7 @@ const AdminBlogList = () => {
 
   // ✅ Edit blog (go to add/edit page)
   const handleEdit = (blog) => {
-    navigate("/admin/blogs/add", { state: { editBlog: blog } });
+    navigate("/admin/blogs", { state: { editBlog: blog } });
   };
 
   return (

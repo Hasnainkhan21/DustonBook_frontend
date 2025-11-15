@@ -20,11 +20,18 @@ export const getBlogs = async () => {
     return data;
 }
 
-// like Blog
-export const likeBlog = async (blogId, userId) => {
-    const { data } = await api.post(`/blogs/like/:id`, { blogId, userId });
-    return data;
-}
+
+export const likeBlog = async (blogId) => {
+  try {
+    const response = await api.put(`/blogs/like/${blogId}`); // matches backend
+    return response.data; // returns updated blog with new likes
+  } catch (error) {
+    console.error("Error liking blog:", error);
+    throw error;
+  }
+};
+
+
 
 // update Blog
 export const updateBlog = async (id, blogData) => {

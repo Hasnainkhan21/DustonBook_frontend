@@ -16,10 +16,11 @@ import Adminbooks from './Admin/pages/Adminbooks'
 import Adminblogs from './Admin/pages/Adminblogs'
 import AdminBookList from './Admin/pages/AdminBookList'
 import AdminBlogList from './Admin/pages/Adminbloglist'
-
+import Navbar from './components/Navbar'
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/books" element={<Books />} />
