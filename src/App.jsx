@@ -17,6 +17,7 @@ import Adminblogs from './Admin/pages/Adminblogs'
 import AdminBookList from './Admin/pages/AdminBookList'
 import AdminBlogList from './Admin/pages/Adminbloglist'
 import Navbar from './components/Navbar'
+import Checkout from './pages/Checkout'
 function App() {
   return (
     <Router>
@@ -30,6 +31,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/modal" element={<UserModal />} />
+        <Route path="/checkout" element={<Checkout />} />
+
       
 
       {/* admin panel */}

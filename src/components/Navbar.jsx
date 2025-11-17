@@ -3,6 +3,7 @@ import { FaSearch, FaUserCircle, FaShoppingCart, FaBars, FaTimes } from 'react-i
 import logo from '../assets/logo.png'
 import { NavLink } from 'react-router-dom'
 import UserModal from "../components/UserModal"
+import { useCart } from "../context/CartContext";
 
 const navLinks = [
   { to: '/', label: 'Home', end: true },
@@ -14,6 +15,7 @@ const navLinks = [
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const [open, setOpen] = useState(false)
+  const { cartCount = 0 } = useCart();
 
   const linkClass = ({ isActive }) =>
     isActive
@@ -61,9 +63,18 @@ const Navbar = () => {
 
       {/* Cart and User Section */}
       <div className="flex items-center gap-5 mt-3 md:mt-0">
-        <NavLink to='/cart' className="relative border-2 border-gray-300 rounded-full p-2 cursor-pointer hover:border-orange-500 transition">
+        <NavLink to='/cart' className="relative border-2 border-gray-300 rounded-full p-2 cursor-pointer hover:border-orange-500 transition" aria-label="View cart">
           <FaShoppingCart className="text-amber-400 text-xl" />
+          {cartCount > 0 && (
+            <span
+              aria-live="polite"
+              className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold"
+            >
+              {cartCount > 99 ? '99+' : cartCount}
+            </span>
+          )}
         </NavLink>
+
         <div
           className="cursor-pointer text-gray-700 hover:text-orange-500 transition"
           onClick={() => setOpen(true)}
