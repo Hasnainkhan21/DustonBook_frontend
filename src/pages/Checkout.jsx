@@ -5,6 +5,7 @@ import { placeOrder } from "../Services/orderService";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
+import { DeliveryCharge } from "../Services/api";
 
 const Checkout = () => {
   const [cart, setCart] = useState(null);
@@ -57,7 +58,7 @@ const Checkout = () => {
     (sum, it) => sum + (it.book?.price || 0) * (it.quantity || 0),
     0
   );
-  const shippingFee = subtotal > 2000 ? 0 : 200;
+  const shippingFee = subtotal > 2000 ? 0 : DeliveryCharge;
   const total = subtotal + shippingFee;
 
   const onSubmit = async (raw) => {
@@ -223,7 +224,7 @@ const Checkout = () => {
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={placing}
-              className="w-full py-3 rounded-xl font-semibold transition bg-[#FCB53B] hover:bg-[#A72703] text-white"
+              className="w-full py-3 rounded-xl font-semibold transition bg-[#FCB53B] active:bg-[#A72703] text-white"
             >
               {placing ? <span className="flex items-center justify-center gap-2"><FaSpinner className="animate-spin" /> Placing...</span> : `Place Order • Rs. ${total.toFixed(2)}`}
             </button>

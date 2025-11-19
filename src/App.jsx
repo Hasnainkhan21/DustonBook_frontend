@@ -18,6 +18,9 @@ import AdminBookList from './Admin/pages/AdminBookList'
 import AdminBlogList from './Admin/pages/Adminbloglist'
 import Navbar from './components/Navbar'
 import Checkout from './pages/Checkout'
+import Orders from './pages/Orders'
+
+
 function App() {
   return (
     <Router>
@@ -32,6 +35,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/modal" element={<UserModal />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orders" element={<Orders />} />
 
       
 

@@ -5,4 +5,5 @@ const api = axios.create({
   withCredentials: true,
 });
 
+export const DeliveryCharge = 200;
 export default api;

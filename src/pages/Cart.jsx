@@ -9,7 +9,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
-
+import { DeliveryCharge } from "../Services/api";
 const Cart = () => {
   const [cart, setCart] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
@@ -91,7 +91,7 @@ const Cart = () => {
     0
   );
 
-  const shippingFee = subtotal > 2000 ? 0 : 200;
+  const shippingFee = subtotal > 2000 ? 0 : DeliveryCharge;
   const totalPrice = subtotal + shippingFee;
 
   return (
