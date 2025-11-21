@@ -19,3 +19,9 @@ export const updateOrderStatus = async (orderId, status) => {
   const res = await api.put(`/orders/update/${orderId}`, { status });
   return res;
 };
+
+//delete order
+export const deleteOrder = async (orderId) => {
+  const res = await api.delete(`/orders/delete/${orderId}`, {withCredentials: true});
+  return res;
+};

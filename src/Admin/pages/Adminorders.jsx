@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { getAllOrders, updateOrderStatus } from "../../Services/orderService";
+import { getAllOrders, updateOrderStatus, deleteOrder } from "../../Services/orderService";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 
 const Adminorders = () => {
   const [orders, setOrders] = useState([]);
   const [expanded, setExpanded] = useState(null); // which order is expanded
   const [loading, setLoading] = useState(true);
+
+  // new state for confirmation dialog
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deletingOrderId, setDeletingOrderId] = useState(null);
 
   const fetchOrders = async () => {
     try {
@@ -30,7 +35,7 @@ const Adminorders = () => {
 
   // Real-time listeners (socket.io)
   useEffect(() => {
-    const socket = io("http://localhost:5000");
+    const socket = io("http://localhost:3006");
 
     socket.on("orderStatusUpdated", (updatedOrder) => {
       if (!updatedOrder?._id) return;
@@ -107,11 +112,52 @@ const Adminorders = () => {
     }
   };
 
+  // open confirmation (replaces window.confirm)
+  const openDeleteConfirm = (orderId) => {
+    setDeletingOrderId(orderId);
+    setConfirmOpen(true);
+  };
+
+  const handleCancelDelete = () => {
+    setDeletingOrderId(null);
+    setConfirmOpen(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deletingOrderId) return;
+    try {
+      await deleteOrder(deletingOrderId);
+
+      // Remove from UI instantly
+      setOrders((prev) => prev.filter((o) => o._id !== deletingOrderId));
+
+      toast.success("Order deleted successfully!");
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("Failed to delete order");
+    } finally {
+      setDeletingOrderId(null);
+      setConfirmOpen(false);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-6 text-white">
       <h1 className="text-3xl font-bold text-[#FCB53B] mb-6">
         Manage Orders
       </h1>
+
+      {/* confirmation dialog (MUI) */}
+      <Dialog open={confirmOpen} onClose={handleCancelDelete}>
+        <DialogTitle>Delete order?</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this order? This action cannot be undone.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="inherit">Cancel</Button>
+          <Button onClick={handleConfirmDelete} color="error" variant="contained">Delete</Button>
+        </DialogActions>
+      </Dialog>
 
       <div className="overflow-x-auto">
         <table className="w-full text-left bg-[#1a1a1a] border border-[#A72703] rounded-lg overflow-hidden">
@@ -182,9 +228,17 @@ const Adminorders = () => {
                     <td className="p-3">
                       <button
                         onClick={() => toggleExpand(order._id)}
-                        className="text-[#FCB53B] hover:underline font-semibold"
+                        className="text-[#FCB53B] hover:underline font-semibold mr-3"
                       >
                         {expanded === order._id ? "Hide" : "View"}
+                      </button>
+
+                      {/* use dialog trigger instead of window.confirm */}
+                      <button
+                        onClick={() => openDeleteConfirm(order._id)}
+                        className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white font-semibold text-sm"
+                      >
+                        Delete
                       </button>
                     </td>
                   </tr>
@@ -226,7 +280,7 @@ const Adminorders = () => {
                           </div>
                         </div>
 
-                        <div className="p-3 bg-[#1a1a1a] rounded-lg border border-[#A72703]">
+                        <div className="p-3 bg-[#1a1a1a] rounded-lg border border-[#A72703] relative">
                           <h3 className="text-lg font-bold text-[#FCB53B] mb-3">
                             📚 Order Items
                           </h3>
