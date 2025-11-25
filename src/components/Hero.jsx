@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import heroImage from '../assets/Hero.jpeg'
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 // Typing effect hook
 function useTyping(text, speed = 50) {
   const [displayed, setDisplayed] = useState("");
+
   useEffect(() => {
     let i = 0;
     const interval = setInterval(() => {
@@ -19,7 +21,7 @@ function useTyping(text, speed = 50) {
 
 const Hero = () => {
   const headline = useTyping("The Library of Infinite Stories", 60);
-
+  const MotionLink = motion(Link);
   return (
     <section className="min-h-[500px] flex flex-col-reverse lg:flex-row items-center justify-between bg-white px-6 lg:px-16 py-10">
       {/* Left Side - Text Content */}
@@ -54,14 +56,15 @@ const Hero = () => {
           Discover hand-picked collections, literary classics, and modern bestsellers. Immerse yourself in the world of books.
         </motion.p>
 
-        <motion.button
+        <MotionLink
           className="mt-4 bg-[#BF092F] text-white px-8 py-3 rounded-full font-semibold shadow-md hover:bg-[#a30828] transition"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.8 }}
-        >
-          Browse Collections
-        </motion.button>
+          transition={{ duration: 0.7, delay: 0.4 }} 
+          to="/books"
+            >
+       Browse Collections
+        </MotionLink>
       </div>
 
       {/* Right Side - Image */}

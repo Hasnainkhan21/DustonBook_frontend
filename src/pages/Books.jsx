@@ -1,49 +1,125 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { getBooks } from "../Services/bookService";
-import { CircularProgress } from "@mui/material";
 import BookCard from "../components/BookCard";
+import BooksHeader from "../components/BooksHeader";
 
-const Book = () => {
+const Books = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // search & filter states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [error, setError] = useState(null);
+
+  // Fetch books
   useEffect(() => {
-    const fetchBooks = async () => {
+    const load = async () => {
       try {
-        const data = await getBooks();
-        setBooks(data.books || []);
-      } catch (error) {
-        console.error("Error fetching books:", error);
+        setLoading(true);
+        const res = await getBooks();
+        const list = Array.isArray(res) ? res : res?.data || res?.books || [];
+        setBooks(list);
+      } catch (err) {
+        setError("Failed to load books");
       } finally {
         setLoading(false);
       }
     };
-    fetchBooks();
+    load();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <CircularProgress />
-      </div>
-    );
-  }
+  // Debounce search
+  const [debounced, setDebounced] = useState("");
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(searchTerm.trim()), 300);
+    return () => clearTimeout(t);
+  }, [searchTerm]);
 
-  if (books.length === 0) {
+  // Filter books
+  const visibleBooks = useMemo(() => {
+    let list = books;
+
+    if (selectedCategory !== "all") {
+      list = list.filter(
+        (b) => (b.category || "").toLowerCase() === selectedCategory.toLowerCase()
+      );
+    }
+
+    if (debounced) {
+      const q = debounced.toLowerCase();
+      list = list.filter(
+        (b) =>
+          (b.title || "").toLowerCase().includes(q) ||
+          (b.author || "").toLowerCase().includes(q)
+      );
+    }
+
+    return list;
+  }, [books, selectedCategory, debounced]);
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("all");
+  };
+
+  if (loading)
     return (
-      <div className="text-center text-gray-600 mt-10 text-lg">
-        📚 No books available
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="h-64 bg-gray-200 animate-pulse rounded" />
+          ))}
+        </div>
       </div>
     );
-  }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {books.map((book) => (
-        <BookCard key={book._id} book={book} />
-      ))}
+    <div className="max-w-6xl mx-auto p-6">
+      {/* HEADER */}
+      <BooksHeader
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        clearFilters={clearFilters}
+      />
+
+      {/* Stats */}
+      <div className="flex justify-between text-sm text-gray-600 mb-4">
+        <div>
+          Showing <strong>{visibleBooks.length}</strong> of{" "}
+          <strong>{books.length}</strong> books
+        </div>
+
+        {(searchTerm || selectedCategory !== "all") && (
+          <button onClick={clearFilters} className="text-orange-600 underline">
+            Clear filters
+          </button>
+        )}
+      </div>
+
+      {/* ERROR */}
+      {error && (
+        <div className="p-6 bg-red-50 rounded text-red-700">{error}</div>
+      )}
+
+      {/* NO RESULTS */}
+      {!error && visibleBooks.length === 0 && (
+        <div className="p-8 bg-white rounded shadow text-center">
+          <p className="text-gray-700 font-semibold mb-2">No results found</p>
+          <p className="text-sm text-gray-400">Try another search or category.</p>
+        </div>
+      )}
+
+      {/* BOOK GRID */}
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {visibleBooks.map((book) => (
+          <BookCard key={book._id} book={book} />
+        ))}
+      </div>
     </div>
   );
 };
 
-export default Book;
+export default Books;

@@ -24,31 +24,34 @@ import Orders from './pages/Orders'
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/books" element={<Books />} />
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/modal" element={<UserModal />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/orders" element={<Orders />} />
+      <div>
+        <Navbar />
+        <div className="h-16 md:h-20" /> {/* spacer = navbar height */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/books" element={<Books />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/modal" element={<UserModal />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/orders" element={<Orders />} />
 
-      
+        
 
-      {/* admin panel */}
-      <Route path="/admin" element={<DashboardLayout />}>
-        <Route path="books" element={<Adminbooks />} />
-        <Route path="blogs" element={<Adminblogs />} />
-        <Route path="orders" element={<Adminorders />} />
-        <Route path="analytics" element={<Analytics />} />
-        <Route path="booklist" element={<AdminBookList />} />
-        <Route path="blogslist" element={<AdminBlogList />} />
-      </Route>
-      </Routes>
+        {/* admin panel */}
+        <Route path="/admin" element={<DashboardLayout />}>
+          <Route path="books" element={<Adminbooks />} />
+          <Route path="blogs" element={<Adminblogs />} />
+          <Route path="orders" element={<Adminorders />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="booklist" element={<AdminBookList />} />
+          <Route path="blogslist" element={<AdminBlogList />} />
+        </Route>
+        </Routes>
+      </div>
 
     </Router>
   )

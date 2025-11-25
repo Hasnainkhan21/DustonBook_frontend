@@ -15,9 +15,19 @@ export const addBook = async (bookData) => {
 };
 
 // ✅ GET All Books
-export const getBooks = async () => {
-  const { data } = await api.get("/books/get");
-  return data;
+export const getBooks = async ({ search = "", category = "all" } = {}) => {
+  try {
+    const { data } = await api.get("/books/get", {
+      params: {
+        search,
+        category,
+      },
+    });
+    return data;
+  } catch (err) {
+    console.error("getBooks error:", err);
+    throw err;
+  }
 };
 
 // ✅ UPDATE Book
