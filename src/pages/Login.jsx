@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { loginUser } from "../Services/authService";
 import { Alert } from "@mui/material";
 import bg from "../assets/authbg.jpg";
-import {Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // Adjust the import based on your project structure
 
 const Login = () => {
   const {
@@ -16,19 +17,25 @@ const Login = () => {
   const [alertMsg, setAlertMsg] = useState("");
   const [alertType, setAlertType] = useState("error");
   const [showAlert, setShowAlert] = useState(false);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { setUser, refreshUser, login } = useAuth(); // Destructure login function from useAuth
 
   const onSubmit = async (data) => {
     try {
       const res = await loginUser(data);
+
+      // ✅ INSTANT AUTH UPDATE so protected routes work immediately
+      login(res?.data?.user || res?.data || res);
+
       setAlertMsg("Login successful!");
       setAlertType("success");
       setShowAlert(true);
       reset();
-      setTimeout(() => {
-        setShowAlert(false);
-        navigate("/"); 
-      }, 1500);
+
+      // optional: keep if server uses cookies and you want to re-fetch authoritative user
+      // await refreshUser();
+
+      navigate("/");
     } catch (error) {
       const msg =
         error?.response?.data?.message || error?.message || "Login failed!";
@@ -46,7 +53,7 @@ const Login = () => {
     >
       <div className="bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg w-full max-w-md space-y-4">
         <h2 className="text-3xl font-bold text-center text-[#BF092F]">
-          Welcome Back
+          Login
         </h2>
 
         {showAlert && (

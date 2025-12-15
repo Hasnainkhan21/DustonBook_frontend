@@ -13,7 +13,7 @@ export  const registerUser = async (userData) => {
 
 export  const loginUser = async (credentials) => {
     try{
-    const response = await api.post("/auth/login", credentials);
+    const response = await api.post("/auth/login", credentials, { withCredentials: true }); // <-- add withCredentials
     return response.data;
     }catch(error){
         console.error("Login error:", error);

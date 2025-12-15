@@ -8,7 +8,7 @@ import Cart from './pages/Cart'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import UserModal from './components/UserModal'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom";   
 import DashboardLayout from './Admin/DashboardLayout'
 import Adminorders from './Admin/pages/Adminorders'
 import Analytics from './Admin/pages/Analytics'
@@ -19,30 +19,36 @@ import AdminBlogList from './Admin/pages/Adminbloglist'
 import Navbar from './components/Navbar'
 import Checkout from './pages/Checkout'
 import Orders from './pages/Orders'
-
+import ProtectedRoute from './Routes/ProtectedRoute'
+import AdminRoute from './Routes/AdminRoute'
 
 function App() {
   return (
-    <Router>
-      <div>
-        <Navbar />
-        <div className="h-16 md:h-20" /> {/* spacer = navbar height */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/books" element={<Books />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/modal" element={<UserModal />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/orders" element={<Orders />} />
+    <div>
+      <Navbar />
+      <div className="h-16 md:h-20" />
 
-        
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/books" element={<Books />} />
+        <Route path="/blogs" element={<ProtectedRoute><Blogs /></ProtectedRoute>} />
+        <Route path="/about" element={<About />} />
+        <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute> } />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/modal" element={<UserModal />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
 
-        {/* admin panel */}
-        <Route path="/admin" element={<DashboardLayout />}>
+        {/* ADMIN ROUTES */}
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <DashboardLayout />
+            </AdminRoute>
+          }
+        >
           <Route path="books" element={<Adminbooks />} />
           <Route path="blogs" element={<Adminblogs />} />
           <Route path="orders" element={<Adminorders />} />
@@ -50,11 +56,10 @@ function App() {
           <Route path="booklist" element={<AdminBookList />} />
           <Route path="blogslist" element={<AdminBlogList />} />
         </Route>
-        </Routes>
-      </div>
-
-    </Router>
+      </Routes>
+    </div>
   )
 }
 
 export default App
+ 

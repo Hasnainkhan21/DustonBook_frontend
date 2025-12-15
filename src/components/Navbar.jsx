@@ -80,11 +80,7 @@ const Navbar = () => {
 
         {/* right */}
         <div className="flex items-center gap-4 md:gap-6">
-          {/* search - compact */}
-          <button className="hidden md:flex items-center gap-2 text-gray-600 bg-gray-100 px-3 py-1 rounded-full hover:brightness-95 transition text-sm">
-            <FaSearch />
-            <span className="hidden lg:inline">Search</span>
-          </button>
+
 
           <NavLink
             to="/cart"
