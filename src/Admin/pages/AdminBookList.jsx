@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getBooks, deleteBook} from "../../Services/bookService";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const AdminBookList = () => {
   const [books, setBooks] = useState([]);
@@ -80,7 +80,7 @@ const fetchBooks = async () => {
         </table>
       )}
 
-      <ToastContainer />
+
     </div>
   );
 };

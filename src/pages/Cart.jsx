@@ -5,8 +5,7 @@ import {
   removeFromCart,
   updateCartQuantity,
 } from "../Services/cartService";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { DeliveryCharge } from "../Services/api";
@@ -236,17 +235,7 @@ const Cart = () => {
         </div>
       </div>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={2500}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { addBook, updateBook } from "../../Services/bookService";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Alert from "@mui/material/Alert";
 
 const AdminBooks = () => {
@@ -211,7 +211,7 @@ const AdminBooks = () => {
         </button>
       </form>
 
-      <ToastContainer position="top-right" autoClose={3000} />
+
     </div>
   );
 };

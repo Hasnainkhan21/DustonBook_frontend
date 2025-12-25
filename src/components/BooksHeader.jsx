@@ -1,5 +1,5 @@
 import { FaSearch, FaTimes, FaFilter } from "react-icons/fa";
-
+import WhatsAppButton from "../components/WhatsAppButton";
 const BooksHeader = ({
   searchTerm,
   setSearchTerm,
@@ -60,6 +60,8 @@ const BooksHeader = ({
 
             <FaFilter className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[#BF092F]" />
           </div>
+
+          <WhatsAppButton />
 
           <button
             onClick={clearFilters}

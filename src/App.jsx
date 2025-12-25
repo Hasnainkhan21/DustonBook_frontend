@@ -1,5 +1,7 @@
 import React from 'react'
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import Home from './pages/Home'
 import Books from './pages/Books'
 import Blogs from './pages/Blogs'
@@ -26,6 +28,7 @@ function App() {
   return (
     <div>
       <Navbar />
+      <ToastContainer position="top-right" autoClose={2500} hideProgressBar={false} newestOnTop={true} closeOnClick pauseOnHover draggable pauseOnFocusLoss />
       <div className="h-16 md:h-20" />
 
       <Routes>

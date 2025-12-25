@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { addBlog } from "../../Services/blogService";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const AdminBlogs = () => {
   const { register, handleSubmit, reset } = useForm();
@@ -69,7 +68,7 @@ const AdminBlogs = () => {
         </button>
       </form>
 
-      <ToastContainer position="top-right" autoClose={3000} />
+
     </div>
   );
 };

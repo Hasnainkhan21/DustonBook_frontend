@@ -2,11 +2,15 @@ import React, { useState, useRef } from "react";
 import { FaCartPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { addToCart } from "../Services/cartService";
 import BookModal from "./BookModal";
 
 const BookCard = ({ book }) => {
   const { loadCart } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [isAdding, setIsAdding] = useState(false);
   const toastShown = useRef(false);
 
@@ -18,6 +22,12 @@ const BookCard = ({ book }) => {
     text.length > len ? text.slice(0, text.slice(0, len).lastIndexOf(" ")) + "…" : text;
 
   const handleAddToCart = async () => {
+    if (!user) {
+      toast.info("Please login to add to cart", { autoClose: 2000 });
+      navigate("/login");
+      return;
+    }
+
     if (isAdding) return;
     setIsAdding(true);
     try {
@@ -31,7 +41,7 @@ const BookCard = ({ book }) => {
 
       await loadCart();
     } catch (err) {
-      toast.error("Please login to add to cart", { autoClose: 3000 });
+      toast.error("Failed to add to cart", { autoClose: 3000 });
     } finally {
       setIsAdding(false);
     }

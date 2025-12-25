@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getBlogs, deleteBlog } from "../../Services/blogService";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const AdminBlogList = () => {
   const [blogs, setBlogs] = useState([]);
@@ -85,7 +85,7 @@ const AdminBlogList = () => {
         </table>
       )}
 
-      <ToastContainer />
+
     </div>
   );
 };
