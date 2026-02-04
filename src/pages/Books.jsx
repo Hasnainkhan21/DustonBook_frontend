@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getBooks } from "../Services/bookService";
 import BookCard from "../components/BookCard";
 import BooksHeader from "../components/BooksHeader";
@@ -6,13 +7,14 @@ import BooksHeader from "../components/BooksHeader";
 const Books = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // search & filter states
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const [error, setError] = useState(null);
 
-  // Fetch books
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debounced, setDebounced] = useState("");
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedCategory = searchParams.get("category") || "all";
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -20,7 +22,7 @@ const Books = () => {
         const res = await getBooks();
         const list = Array.isArray(res) ? res : res?.data || res?.books || [];
         setBooks(list);
-      } catch (err) {
+      } catch {
         setError("Failed to load books");
       } finally {
         setLoading(false);
@@ -29,14 +31,11 @@ const Books = () => {
     load();
   }, []);
 
-  // Debounce search
-  const [debounced, setDebounced] = useState("");
   useEffect(() => {
     const t = setTimeout(() => setDebounced(searchTerm.trim()), 300);
     return () => clearTimeout(t);
   }, [searchTerm]);
 
-  // Filter books
   const visibleBooks = useMemo(() => {
     let list = books;
 
@@ -60,10 +59,10 @@ const Books = () => {
 
   const clearFilters = () => {
     setSearchTerm("");
-    setSelectedCategory("all");
+    setSearchParams({});
   };
 
-  if (loading)
+  if (loading) {
     return (
       <div className="max-w-6xl mx-auto p-6">
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -73,19 +72,22 @@ const Books = () => {
         </div>
       </div>
     );
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      {/* HEADER */}
       <BooksHeader
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
+        setSelectedCategory={(cat) =>
+          cat === "all"
+            ? setSearchParams({})
+            : setSearchParams({ category: cat })
+        }
         clearFilters={clearFilters}
       />
 
-      {/* Stats */}
       <div className="flex justify-between text-sm text-gray-600 mb-4">
         <div>
           Showing <strong>{visibleBooks.length}</strong> of{" "}
@@ -93,26 +95,28 @@ const Books = () => {
         </div>
 
         {(searchTerm || selectedCategory !== "all") && (
-          <button onClick={clearFilters} className="text-orange-600 underline">
+          <button
+            onClick={clearFilters}
+            className="text-orange-600 underline"
+          >
             Clear filters
           </button>
         )}
       </div>
 
-      {/* ERROR */}
       {error && (
         <div className="p-6 bg-red-50 rounded text-red-700">{error}</div>
       )}
 
-      {/* NO RESULTS */}
       {!error && visibleBooks.length === 0 && (
         <div className="p-8 bg-white rounded shadow text-center">
           <p className="text-gray-700 font-semibold mb-2">No results found</p>
-          <p className="text-sm text-gray-400">Try another search or category.</p>
+          <p className="text-sm text-gray-400">
+            Try another search or category.
+          </p>
         </div>
       )}
 
-      {/* BOOK GRID */}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {visibleBooks.map((book) => (
           <BookCard key={book._id} book={book} />
