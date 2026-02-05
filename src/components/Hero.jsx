@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import heroImage from "../assets/Hero.jpeg";
+import heroImage from "../assets/hero.jpeg";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -25,7 +25,7 @@ const Hero = () => {
   const MotionLink = motion(Link);
 
   return (
-    <section className="min-h-[400px] flex flex-col md:flex-row items-center justify-between bg-[#FFF9F5] px-6 md:px-5 lg:px-15 gap-10 py-5 relative overflow-hidden">
+    <section className="min-h-[400px] flex flex-col md:flex-row items-center justify-between bg-white px-6 md:px-5 lg:px-15 gap-10 py-5 relative overflow-hidden">
 
       {/* Background Blobs */}
       <div className="absolute top-0 right-0 w-72 h-72 bg-red-200 opacity-40 rounded-full blur-3xl translate-x-20 -translate-y-10"></div>

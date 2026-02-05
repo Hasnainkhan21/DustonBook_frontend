@@ -23,6 +23,7 @@ import Checkout from './pages/Checkout'
 import Orders from './pages/Orders'
 import ProtectedRoute from './Routes/ProtectedRoute'
 import AdminRoute from './Routes/AdminRoute'
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
           <Route path="blogslist" element={<AdminBlogList />} />
         </Route>
       </Routes>
+      <Footer />
     </div>
   )
 }

@@ -27,14 +27,14 @@ const features = [
 
 const WhyChooseUs = () => {
   return (
-    <section className="py-1 sm:py-14 bg-white dark:bg-slate-900">
+    <section className="py-1 sm:py-14 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8 sm:mb-12">
           <p className="text-3xl text-[#BF092F] font-semibold">Why Choose Us</p>
-          <h3 className="mt-2 text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-slate-100">
+          <h3 className="mt-2 text-2xl sm:text-3xl font-extrabold text-gray-600 dark:text-gray-600">
             Books that inspire, delivered with care
           </h3>
-          <p className="mt-2 text-sm text-slate-500 dark:text-slate-300 max-w-2xl mx-auto">
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-500 max-w-2xl mx-auto">
             We combine a hand-picked selection, great prices, and exceptional service so you can focus on reading.
           </p>
         </div>

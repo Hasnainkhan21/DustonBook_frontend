@@ -40,7 +40,7 @@ const Navbar = () => {
   const handleLinkClick = () => setMenuOpen(false);
 
   return (
-    <nav className="w-full bg-white shadow-md py-3 px-4 md:px-8 fixed top-0 left-0 z-50">
+    <nav className="w-full bg-white shadow-md py-2 px-4 md:px-8 fixed top-0 left-0 z-50">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 md:gap-8">
         {/* left */}
         <div className="flex items-center gap-3 md:gap-4 min-w-0">
@@ -52,12 +52,14 @@ const Navbar = () => {
             {menuOpen ? <FaTimes /> : <FaBars />}
           </button>
 
-          <div className="flex items-center gap-2 md:gap-4 cursor-pointer">
-            <img
-              src={logo}
-              alt="Dust on Book"
-              className="w-10 h-10 md:w-12 md:h-12 object-contain"
-            />
+          <div className="flex items-center gap-2 md:gap-1 cursor-pointer">
+            <div className="w-14 h-14 md:w-14 md:h-14 relative flex-shrink-0">
+              <img
+                src={logo}
+                alt="Dust on Book"
+                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 object-contain"
+              />
+            </div>
             <div className="hidden md:block">
               <div className="text-lg font-extrabold text-[#1f2937]">
                 Dust on Book
@@ -134,7 +136,9 @@ const Navbar = () => {
           <div className="p-5">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <img src={logo} alt="logo" className="w-8 h-8 object-contain" />
+                <div className="w-8 h-8 relative flex-shrink-0">
+                  <img src={logo} alt="logo" className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 object-contain" />
+                </div>
                 <div>
                   <div className="text-sm font-bold">Dust on Book</div>
                   <div className="text-xs text-gray-400">Explore books</div>
