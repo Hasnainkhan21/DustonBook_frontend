@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import { getBooks } from "../Services/bookService";
 import BookCard from "../components/BookCard";
 import BooksHeader from "../components/BooksHeader";
+import WhatsAppButton from "../components/WhatsAppButton";
+
 
 const Books = () => {
   const [books, setBooks] = useState([]);
@@ -122,6 +124,7 @@ const Books = () => {
           <BookCard key={book._id} book={book} />
         ))}
       </div>
+      <WhatsAppButton />
     </div>
   );
 };
