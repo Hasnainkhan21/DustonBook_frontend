@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getAnalytics } from "../../Services/analyticsService";
+import AdminsModal from "./AdminsModal";
 
-const StatCard = ({ label, value }) => (
-  <div className="bg-white rounded shadow p-4 flex-1">
+const StatCard = ({ label, value, onClick }) => (
+  <div
+    onClick={onClick}
+    className={`bg-white rounded shadow p-4 flex-1 ${onClick ? "cursor-pointer hover:shadow-md" : ""}`}
+  >
     <div className="text-sm text-gray-500">{label}</div>
     <div className="text-2xl font-semibold mt-2">{value}</div>
   </div>
@@ -12,6 +16,7 @@ const Analytics = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showAdminsModal, setShowAdminsModal] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -31,7 +36,7 @@ const Analytics = () => {
   if (loading) return <div className="p-6">Loading analytics...</div>;
   if (error) return <div className="p-6 text-red-600">{error}</div>;
 
-  const { totalUsers, totalBooks, totalOrders, totalRevenue, topBooks, blogs } = data || {};
+  const { totalUsers, totalBooks, totalOrders, totalAdmins, topBooks, blogs } = data || {};
 
   return (
     <div className="p-6 space-y-6">
@@ -42,10 +47,14 @@ const Analytics = () => {
         <StatCard label="Books" value={totalBooks ?? 0} />
         <StatCard label="Orders" value={totalOrders ?? 0} />
         <StatCard label="Blogs" value={blogs ?? 0} />
-        <StatCard label="Revenue" value={
-          (typeof totalRevenue === 'number') ? `₹ ${totalRevenue.toLocaleString()}` : totalRevenue
-        } />
+        <StatCard label="Admins" value={totalAdmins ?? 0} onClick={() => setShowAdminsModal(true)} />
       </div>
+
+      <AdminsModal
+        open={showAdminsModal}
+        onClose={() => setShowAdminsModal(false)}
+        admins={data?.admins ?? []}
+      />
 
       <div className="grid md:grid-cols-2 gap-6">
         <div className="bg-white rounded shadow p-4">
@@ -90,7 +99,7 @@ const Analytics = () => {
             Total blogs: <strong>{blogs ?? 0}</strong>
           </div>
           <div className="text-sm text-gray-700 mt-2">
-            Total revenue: <strong>₹ {Number(totalRevenue || 0).toLocaleString()}</strong>
+            Total admins: <strong>{totalAdmins ?? 0}</strong>
           </div>
         </div>
       </div>
