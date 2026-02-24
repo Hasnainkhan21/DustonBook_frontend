@@ -4,8 +4,10 @@ import api from "./api";
 export const addBook = async (bookData) => {
   const formData = new FormData();
   Object.entries(bookData).forEach(([key, value]) => {
-    if (key === "coverImage" && value && value[0]) {
-      formData.append("coverImage", value[0]);
+    if (key === "coverImage") {
+      if (value && value[0]) {
+        formData.append("coverImage", value[0]);
+      }
     } else {
       formData.append(key, value);
     }
@@ -34,8 +36,10 @@ export const getBooks = async ({ search = "", category = "all" } = {}) => {
 export const updateBook = async (id, bookData) => {
   const formData = new FormData();
   Object.entries(bookData).forEach(([key, value]) => {
-    if (key === "coverImage" && value && value[0]) {
-      formData.append("coverImage", value[0]);
+    if (key === "coverImage") {
+      if (value && value[0]) {
+        formData.append("coverImage", value[0]);
+      }
     } else {
       formData.append(key, value);
     }

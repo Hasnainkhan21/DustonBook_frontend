@@ -184,21 +184,40 @@ const AdminBooks = () => {
         </div>
 
         {/* Cover Image */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Cover Image
+        <div className="bg-gray-50 p-3 rounded-lg border border-dashed border-gray-300">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Book Cover Image
           </label>
+
+          {/* Existing Image Preview */}
+          {editBook && editBook.coverImage && (
+            <div className="mb-4 flex items-center gap-4 p-2 bg-white rounded-md border shadow-sm">
+              <img
+                src={editBook.coverImage}
+                alt="Current Cover"
+                className="w-16 h-20 object-cover rounded shadow-sm border border-orange-200"
+                onError={(e) => {
+                  e.target.src = "https://via.placeholder.com/150x200?text=Error";
+                }}
+              />
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] uppercase tracking-wider text-orange-600 font-bold mb-1">Current Image</p>
+                <p className="text-xs text-gray-600 truncate font-mono bg-gray-100 p-1 rounded" title={editBook.coverImage}>
+                  {editBook.coverImage.split('/').pop()}
+                </p>
+              </div>
+            </div>
+          )}
+
           <input
             type="file"
             {...register("coverImage")}
             accept="image/*"
-            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none"
+            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer"
           />
-          {editBook && editBook.coverImage && (
-            <p className="text-xs text-gray-500 mt-1">
-              Current: {editBook.coverImage}
-            </p>
-          )}
+          <p className="text-[10px] text-gray-400 mt-2">
+            Leave empty to keep the existing image when editing.
+          </p>
         </div>
 
         {/* Submit Button */}
