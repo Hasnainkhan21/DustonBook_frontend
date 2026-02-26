@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaTrashAlt, FaPlus, FaMinus, FaShoppingBag } from "react-icons/fa";
+import { FaTrashAlt, FaPlus, FaMinus, FaShoppingBag, FaSpinner } from "react-icons/fa";
 import {
   getCart,
   removeFromCart,
@@ -8,29 +8,42 @@ import {
 import { toast } from "react-toastify";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { DeliveryCharge } from "../Services/api";
 const Cart = () => {
   const [cart, setCart] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
 
+  const { user, loading: authLoading } = useAuth();
   const { loadCart } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadCartData = async () => {
+      if (!user) {
+        if (!authLoading) setLoading(false);
+        return;
+      }
+
       try {
         const data = await getCart();
         setCart(data || { items: [] });
       } catch (err) {
-        console.error("Cart load error:", err);
-        toast.error("❌ Failed to load cart");
+        // Only show error for real failures, not auth/not-found issues
+        if (err.response?.status !== 401 && err.response?.status !== 404) {
+          console.error("Cart load error:", err);
+          toast.error("❌ Failed to load cart");
+        }
         setCart({ items: [] });
       } finally {
         setLoading(false);
       }
     };
-    loadCartData();
-  }, []);
+
+    if (!authLoading) {
+      loadCartData();
+    }
+  }, [user, authLoading]);
 
   const handleRemoveItem = async (bookId) => {
     try {
@@ -66,21 +79,51 @@ const Cart = () => {
     }
   };
 
-  if (loading) {
-    return <div className="p-6 text-center text-gray-600">Loading cart...</div>;
+  if (authLoading || loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <div className="text-center">
+          <FaSpinner className="animate-spin text-yellow-500 text-4xl mx-auto mb-4" />
+          <p className="text-gray-500 font-medium tracking-wide">Loading your library...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-gray-600 bg-gray-50 px-4">
+        <div className="bg-white p-8 rounded-2xl shadow-lg text-center max-w-sm w-full">
+          <FaShoppingBag size={64} className="text-yellow-500 mx-auto mb-4 opacity-50" />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Please Login</h2>
+          <p className="text-sm text-gray-500 mb-6">You need to be logged in to view and manage your cart.</p>
+          <button
+            onClick={() => navigate("/login")}
+            className="w-full bg-yellow-500 text-black px-6 py-3 rounded-xl font-bold hover:bg-yellow-600 transition shadow-md"
+          >
+            Go to Login
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (!cart?.items || cart.items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-gray-600">
-        <FaShoppingBag size={80} className="text-gray-300 mb-4" />
-        <p className="text-2xl font-semibold">Your cart is empty</p>
-        <button
-          onClick={() => navigate("/books")}
-          className="mt-6 bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition"
-        >
-          Continue Shopping
-        </button>
+      <div className="flex flex-col items-center justify-center min-h-screen text-gray-600 bg-gray-50 px-4">
+        <div className="bg-white p-8 rounded-3xl shadow-xl text-center max-w-sm w-full border border-gray-100">
+          <div className="w-24 h-24 bg-yellow-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <FaShoppingBag size={40} className="text-yellow-500" />
+          </div>
+          <p className="text-2xl font-extrabold text-gray-900 mb-2">Your cart is empty</p>
+          <p className="text-gray-500 mb-8 text-sm">Looks like you haven't added any stories to your collection yet.</p>
+          <button
+            onClick={() => navigate("/books")}
+            className="w-full bg-yellow-500 text-black px-8 py-4 rounded-2xl hover:bg-yellow-600 font-extrabold transition-all shadow-lg active:scale-95"
+          >
+            Browse Books
+          </button>
+        </div>
       </div>
     );
   }
@@ -124,7 +167,7 @@ const Cart = () => {
                     <p className="text-gray-600 text-sm">
                       by {item.book.author}
                     </p>
-                    <p className="text-orange-600 font-bold mt-2 text-lg">
+                    <p className="text-yellow-600 font-bold mt-2 text-lg">
                       Rs. {item.book.price?.toFixed(2) || "0.00"}
                     </p>
 
@@ -165,7 +208,7 @@ const Cart = () => {
                     </button>
                     <div className="text-right">
                       <p className="text-sm text-gray-600">Subtotal</p>
-                      <p className="text-xl font-bold text-orange-600">
+                      <p className="text-xl font-bold text-yellow-600">
                         Rs. {(item.book.price * item.quantity).toFixed(2)}
                       </p>
                     </div>
@@ -177,7 +220,7 @@ const Cart = () => {
 
           {/* Checkout Card */}
           <div className="lg:col-span-1">
-            <div className="bg-white p-8 rounded-xl shadow-lg border border-orange-200 sticky top-8">
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-yellow-200 sticky top-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 Order Total
               </h2>
@@ -193,11 +236,10 @@ const Cart = () => {
                 <div className="flex justify-between">
                   <span className="text-sm">Shipping</span>
                   <span
-                    className={`font-semibold ${
-                      shippingFee === 0
-                        ? "text-green-600"
-                        : "text-gray-700"
-                    }`}
+                    className={`font-semibold ${shippingFee === 0
+                      ? "text-green-600"
+                      : "text-gray-700"
+                      }`}
                   >
                     {shippingFee === 0 ? "✅ Free" : `Rs. ${shippingFee}`}
                   </span>
@@ -212,14 +254,14 @@ const Cart = () => {
 
               <div className="flex justify-between items-center mb-6">
                 <span className="text-xl font-bold text-gray-800">Total</span>
-                <span className="text-3xl font-bold text-orange-600">
+                <span className="text-3xl font-bold text-yellow-600">
                   Rs. {totalPrice.toFixed(2)}
                 </span>
               </div>
 
               <button
                 onClick={() => navigate("/checkout")}
-                className="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white py-3 rounded-lg font-bold hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 mb-3"
+                className="w-full bg-yellow-500 text-black py-3 rounded-lg font-bold hover:bg-yellow-600 transition-all active:scale-95 flex items-center justify-center gap-2 mb-3 shadow-md"
               >
                 <FaShoppingBag /> Proceed to Checkout
               </button>

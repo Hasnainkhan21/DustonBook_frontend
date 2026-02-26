@@ -89,13 +89,13 @@ const AdminBooks = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 bg-white p-6 rounded-2xl shadow-md">
-      <h2 className="text-2xl font-bold text-orange-600 mb-4 text-center">
+    <div className="max-w-lg mx-auto bg-white p-5 md:p-8 rounded-2xl shadow-lg">
+      <h2 className="text-xl md:text-2xl font-extrabold text-yellow-600 mb-6 text-center">
         {editBook ? "Edit Book" : "Add New Book"}
       </h2>
 
       {error && (
-        <Alert severity="error" className="mb-4">
+        <Alert severity="error" className="mb-6 rounded-xl">
           {error}
         </Alert>
       )}
@@ -109,7 +109,7 @@ const AdminBooks = () => {
           <input
             {...register("title", { required: true, minLength: 3 })}
             placeholder="Enter book title"
-            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none"
+            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-yellow-500 outline-none"
           />
         </div>
 
@@ -121,7 +121,7 @@ const AdminBooks = () => {
           <input
             {...register("author", { required: true, minLength: 2 })}
             placeholder="Enter author name"
-            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none"
+            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-yellow-500 outline-none"
           />
         </div>
 
@@ -132,7 +132,7 @@ const AdminBooks = () => {
           </label>
           <select
             {...register("category", { required: true })}
-            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none bg-white"
+            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-yellow-500 outline-none bg-white"
           >
             <option value="">-- Select a Category --</option>
             {categories.map((cat) => (
@@ -153,7 +153,7 @@ const AdminBooks = () => {
             type="number"
             placeholder="Enter price"
             step="0.01"
-            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none"
+            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-yellow-500 outline-none"
           />
         </div>
 
@@ -166,7 +166,7 @@ const AdminBooks = () => {
             {...register("stock", { required: true, min: 0 })}
             type="number"
             placeholder="Enter stock quantity"
-            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none"
+            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-yellow-500 outline-none"
           />
         </div>
 
@@ -178,7 +178,7 @@ const AdminBooks = () => {
           <textarea
             {...register("description", { required: true, minLength: 10 })}
             placeholder="Enter book description"
-            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-orange-500 outline-none"
+            className="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-yellow-500 outline-none"
             rows={4}
           />
         </div>
@@ -195,13 +195,13 @@ const AdminBooks = () => {
               <img
                 src={editBook.coverImage}
                 alt="Current Cover"
-                className="w-16 h-20 object-cover rounded shadow-sm border border-orange-200"
+                className="w-16 h-20 object-cover rounded shadow-sm border border-yellow-200"
                 onError={(e) => {
                   e.target.src = "https://via.placeholder.com/150x200?text=Error";
                 }}
               />
               <div className="flex-1 min-w-0">
-                <p className="text-[10px] uppercase tracking-wider text-orange-600 font-bold mb-1">Current Image</p>
+                <p className="text-[10px] uppercase tracking-wider text-yellow-600 font-bold mb-1">Current Image</p>
                 <p className="text-xs text-gray-600 truncate font-mono bg-gray-100 p-1 rounded" title={editBook.coverImage}>
                   {editBook.coverImage.split('/').pop()}
                 </p>
@@ -213,7 +213,7 @@ const AdminBooks = () => {
             type="file"
             {...register("coverImage")}
             accept="image/*"
-            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer"
+            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 cursor-pointer"
           />
           <p className="text-[10px] text-gray-400 mt-2">
             Leave empty to keep the existing image when editing.
@@ -224,7 +224,7 @@ const AdminBooks = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white font-semibold py-2 rounded transition"
+          className="w-full bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-400 text-black font-bold py-2.5 rounded-xl transition shadow-md"
         >
           {loading ? "Saving..." : editBook ? "Update Book" : "Add Book"}
         </button>

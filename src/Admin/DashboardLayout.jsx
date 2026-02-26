@@ -28,8 +28,10 @@ const DashboardLayout = () => {
           </button>
         </div>
 
-        <main className="flex-1 p-6 pt-32 md:pt-0">
-          <Outlet /> {/* Child routes render here */}
+        <main className="flex-1 pt-16 md:pt-0 overflow-y-auto">
+          <div className="container mx-auto">
+            <Outlet /> {/* Child routes render here */}
+          </div>
         </main>
       </div>
     </div>

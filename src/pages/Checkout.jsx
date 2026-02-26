@@ -97,7 +97,7 @@ const Checkout = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-4 text-[#A72703]">Checkout</h2>
+      <h2 className="text-2xl font-bold mb-4 text-yellow-600">Checkout</h2>
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Shipping Form */}
@@ -106,7 +106,7 @@ const Checkout = () => {
             <label className="block text-sm font-medium">Full name *</label>
             <input
               {...register("fullName", { required: true, minLength: 3 })}
-              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-[#FCB53B] outline-none"
+              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-yellow-500 outline-none"
               placeholder="John Doe"
               aria-invalid={errors.fullName ? "true" : "false"}
             />
@@ -119,7 +119,7 @@ const Checkout = () => {
             <label className="block text-sm font-medium">Phone *</label>
             <input
               {...register("phone", { required: true, pattern: /^\+?[0-9]{10,15}$/ })}
-              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-[#FCB53B] outline-none"
+              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-yellow-500 outline-none"
               placeholder="+923XXXXXXXXX or 03XXXXXXXXX"
               aria-invalid={errors.phone ? "true" : "false"}
             />
@@ -132,7 +132,7 @@ const Checkout = () => {
             <label className="block text-sm font-medium">Address *</label>
             <input
               {...register("address", { required: true, minLength: 5 })}
-              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-[#FCB53B] outline-none"
+              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-yellow-500 outline-none"
               placeholder="Street, House, Apartment"
               aria-invalid={errors.address ? "true" : "false"}
             />
@@ -145,7 +145,7 @@ const Checkout = () => {
             <label className="block text-sm font-medium">City</label>
             <input
               {...register("city")}
-              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-[#FCB53B] outline-none"
+              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-yellow-500 outline-none"
               placeholder="Karachi, Lahore..."
             />
             {errors.city && (
@@ -157,7 +157,7 @@ const Checkout = () => {
             <label className="block text-sm font-medium">Postal code</label>
             <input
               {...register("postalCode", { pattern: /^[0-9A-Za-z\- ]{3,10}$/ })}
-              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-[#FCB53B] outline-none"
+              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-yellow-500 outline-none"
               placeholder="Postal Code"
             />
             {errors.postalCode && (
@@ -169,7 +169,7 @@ const Checkout = () => {
             <label className="block text-sm font-medium">Country</label>
             <input
               {...register("country")}
-              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-[#FCB53B] outline-none"
+              className="mt-1 w-full px-3 py-2 border rounded focus:ring-2 focus:ring-yellow-500 outline-none"
               placeholder="Pakistan"
             />
             {errors.country && (
@@ -182,7 +182,7 @@ const Checkout = () => {
             <button
               type="submit"
               disabled={placing}
-              className="w-full py-3 rounded-xl font-semibold transition bg-[#FCB53B] hover:bg-[#A72703] text-white"
+              className="w-full py-3 rounded-xl font-bold transition bg-yellow-500 hover:bg-yellow-600 text-black shadow-md"
             >
               {placing ? <span className="flex items-center justify-center gap-2"><FaSpinner className="animate-spin" /> Placing...</span> : `Place Order • Rs. ${total.toFixed(2)}`}
             </button>
@@ -224,7 +224,7 @@ const Checkout = () => {
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={placing}
-              className="w-full py-3 rounded-xl font-semibold transition bg-[#FCB53B] active:bg-[#A72703] text-white"
+              className="w-full py-3 rounded-xl font-bold transition bg-yellow-500 hover:bg-yellow-600 text-black shadow-md"
             >
               {placing ? <span className="flex items-center justify-center gap-2"><FaSpinner className="animate-spin" /> Placing...</span> : `Place Order • Rs. ${total.toFixed(2)}`}
             </button>

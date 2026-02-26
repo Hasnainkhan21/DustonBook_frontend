@@ -10,7 +10,7 @@ import Cart from './pages/Cart'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import UserModal from './components/UserModal'
-import { Route, Routes } from "react-router-dom";   
+import { Route, Routes } from "react-router-dom";
 import DashboardLayout from './Admin/DashboardLayout'
 import Adminorders from './Admin/pages/Adminorders'
 import Analytics from './Admin/pages/Analytics'
@@ -37,7 +37,7 @@ function App() {
         <Route path="/books" element={<Books />} />
         <Route path="/blogs" element={<ProtectedRoute><Blogs /></ProtectedRoute>} />
         <Route path="/about" element={<About />} />
-        <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute> } />
+        <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/modal" element={<UserModal />} />
@@ -53,6 +53,7 @@ function App() {
             </AdminRoute>
           }
         >
+          <Route index element={<Analytics />} />
           <Route path="books" element={<Adminbooks />} />
           <Route path="blogs" element={<Adminblogs />} />
           <Route path="orders" element={<Adminorders />} />
@@ -67,4 +68,3 @@ function App() {
 }
 
 export default App
- 

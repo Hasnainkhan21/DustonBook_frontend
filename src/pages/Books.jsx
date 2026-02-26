@@ -67,9 +67,9 @@ const Books = () => {
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto p-6">
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-64 bg-gray-200 animate-pulse rounded" />
+            <div key={i} className="h-48 sm:h-64 bg-gray-200 animate-pulse rounded-2xl" />
           ))}
         </div>
       </div>
@@ -99,7 +99,7 @@ const Books = () => {
         {(searchTerm || selectedCategory !== "all") && (
           <button
             onClick={clearFilters}
-            className="text-orange-600 underline"
+            className="text-yellow-600 underline font-medium"
           >
             Clear filters
           </button>
@@ -119,7 +119,7 @@ const Books = () => {
         </div>
       )}
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
         {visibleBooks.map((book) => (
           <BookCard key={book._id} book={book} />
         ))}

@@ -15,7 +15,9 @@ const AdminBlogList = () => {
   const fetchBlogs = async () => {
     try {
       const data = await getBlogs();
-      setBlogs(Array.isArray(data) ? data : []); // safety check
+      // handle various response shapes
+      const list = Array.isArray(data) ? data : data?.blogs || data?.data || [];
+      setBlogs(list);
     } catch (err) {
       toast.error("Failed to load blogs");
     }
@@ -34,58 +36,47 @@ const AdminBlogList = () => {
     }
   };
 
-  // ✅ Edit blog (go to add/edit page)
-  const handleEdit = (blog) => {
-    navigate("/admin/blogs", { state: { editBlog: blog } });
-  };
+
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 p-4 bg-white shadow rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 text-orange-600 text-center">
+    <div className="max-w-5xl mx-auto p-4 md:p-6 bg-white shadow-md rounded-2xl">
+      <h2 className="text-2xl font-bold mb-6 text-yellow-600 text-center">
         Admin Blog Management
       </h2>
 
       {blogs.length === 0 ? (
-        <p className="text-center text-gray-500">No blogs found.</p>
+        <p className="text-center text-gray-500 py-10">No blogs found.</p>
       ) : (
-        <table className="w-full border border-gray-300">
-          <thead className="bg-orange-100">
-            <tr>
-              <th className="p-2 border">Title</th>
-              <th className="p-2 border">Author</th>
-              <th className="p-2 border">Tags</th>
-              <th className="p-2 border">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {blogs.map((b) => (
-              <tr key={b._id}>
-                <td className="p-2 border">{b.title}</td>
-                <td className="p-2 border">{b.authorName || "Admin"}</td>
-                <td className="p-2 border">
-                  {b.tags?.length > 0 ? b.tags.join(", ") : "—"}
-                </td>
-                <td className="p-2 border text-center">
-                  <button
-                    onClick={() => handleEdit(b)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(b._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="overflow-x-auto rounded-xl border border-gray-200">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-yellow-50 text-yellow-800">
+              <tr>
+                <th className="p-3 font-semibold border-b">Title</th>
+                <th className="p-3 font-semibold border-b">Author</th>
+                <th className="p-3 font-semibold border-b text-center">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {blogs.map((b) => (
+                <tr key={b._id} className="hover:bg-gray-50 transition-colors">
+                  <td className="p-3 text-sm font-medium">{b.title}</td>
+                  <td className="p-3 text-sm text-gray-600">{b.authorName || "Admin"}</td>
+                  <td className="p-3 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <button
+                        onClick={() => handleDelete(b._id)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
-
-
     </div>
   );
 };

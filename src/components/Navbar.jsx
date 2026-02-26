@@ -34,7 +34,7 @@ const Navbar = () => {
   }, []);
 
   const linkClass = ({ isActive }) =>
-    isActive ? "text-yellow-500 font-bold" : "hover:text-orange-500 transition";
+    isActive ? "text-yellow-600 font-bold" : "hover:text-yellow-500 transition";
 
   // close menu when navigating
   const handleLinkClick = () => setMenuOpen(false);
@@ -86,7 +86,7 @@ const Navbar = () => {
 
           <NavLink
             to="/cart"
-            className="relative border-2 border-gray-200 rounded-full p-2 cursor-pointer hover:border-orange-500 transition"
+            className="relative border-2 border-gray-200 rounded-full p-2 cursor-pointer hover:border-yellow-500 transition"
             aria-label="View cart"
           >
             <FaShoppingCart className="text-amber-400 text-lg md:text-xl" />
@@ -101,7 +101,7 @@ const Navbar = () => {
           </NavLink>
 
           <button
-            className="cursor-pointer text-gray-700 hover:text-orange-500 transition p-1"
+            className="cursor-pointer text-gray-700 hover:text-yellow-500 transition p-1"
             onClick={() => setOpen(true)}
             aria-label="Open user menu"
           >
@@ -113,23 +113,20 @@ const Navbar = () => {
 
       {/* mobile menu overlay */}
       <div
-        className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${
-          menuOpen ? "pointer-events-auto" : "pointer-events-none"
-        }`}
+        className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${menuOpen ? "pointer-events-auto" : "pointer-events-none"
+          }`}
         aria-hidden={!menuOpen}
       >
         <div
-          className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
-            menuOpen ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${menuOpen ? "opacity-100" : "opacity-0"
+            }`}
           onClick={() => setMenuOpen(false)}
         />
         <div
-          className={`fixed top-14 left-4 right-4 mx-auto bg-white rounded-xl shadow-xl border border-gray-100 transform transition-all duration-300 overflow-hidden ${
-            menuOpen
+          className={`fixed top-14 left-4 right-4 mx-auto bg-white rounded-xl shadow-xl border border-gray-100 transform transition-all duration-300 overflow-hidden ${menuOpen
               ? "opacity-100 translate-y-0"
               : "opacity-0 -translate-y-4 pointer-events-none"
-          }`}
+            }`}
           role="dialog"
           aria-modal="true"
         >
@@ -161,10 +158,9 @@ const Navbar = () => {
                       to={to}
                       end={end}
                       className={({ isActive }) =>
-                        `block px-4 py-3 rounded-lg text-sm font-medium transition ${
-                          isActive
-                            ? "bg-[#FFF3E5] text-[#A72703] font-bold"
-                            : "hover:bg-gray-50"
+                        `block px-4 py-3 rounded-lg text-sm font-medium transition ${isActive
+                          ? "bg-yellow-50 text-yellow-700 font-bold"
+                          : "hover:bg-gray-50"
                         }`
                       }
                       onClick={handleLinkClick}
@@ -195,7 +191,7 @@ const Navbar = () => {
                     setOpen(true);
                     setMenuOpen(false);
                   }}
-                  className="px-3 py-2 rounded-lg bg-gradient-to-tr from-[#ffa200] to-[#ffb74a] text-black font-semibold shadow-sm"
+                  className="px-3 py-2 rounded-lg bg-yellow-500 text-black font-semibold shadow-sm hover:bg-yellow-600 transition"
                 >
                   Sign in
                 </button>

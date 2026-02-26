@@ -4,8 +4,10 @@ import api from "../Services/api";
 export const addBlog = async (blogData) => {
     const formData = new FormData();
     Object.entries(blogData).forEach(([key, value]) => {
-        if (key === "image" && value && value[0]) {
-            formData.append("image", value[0]);
+        if (key === "image") {
+            if (value && value[0]) formData.append("image", value[0]);
+        } else if (Array.isArray(value)) {
+            value.forEach(item => formData.append(key, item));
         } else {
             formData.append(key, value);
         }
@@ -16,29 +18,28 @@ export const addBlog = async (blogData) => {
 
 // ✅ GET All Blogs
 export const getBlogs = async () => {
-    const { data } = await api.get("/blogs/all");
+    const { data } = await api.get(`/blogs/all?t=${new Date().getTime()}`);
     return data;
 }
 
-
 export const likeBlog = async (blogId) => {
-  try {
-    const response = await api.put(`/blogs/like/${blogId}`); // matches backend
-    return response.data; // returns updated blog with new likes
-  } catch (error) {
-    console.error("Error liking blog:", error);
-    throw error;
-  }
+    try {
+        const response = await api.put(`/blogs/like/${blogId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error liking blog:", error);
+        throw error;
+    }
 };
-
-
 
 // update Blog
 export const updateBlog = async (id, blogData) => {
     const formData = new FormData();
     Object.entries(blogData).forEach(([key, value]) => {
-        if (key === "image" && value && value[0]) {
-            formData.append("image", value[0]);
+        if (key === "image") {
+            if (value && value[0]) formData.append("image", value[0]);
+        } else if (Array.isArray(value)) {
+            value.forEach(item => formData.append(key, item));
         } else {
             formData.append(key, value);
         }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getBooks, deleteBook} from "../../Services/bookService";
+import { getBooks, deleteBook } from "../../Services/bookService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -11,15 +11,15 @@ const AdminBookList = () => {
     fetchBooks();
   }, []);
 
-const fetchBooks = async () => {
-  try {
-    const data = await getBooks();
-    setBooks(Array.isArray(data) ? data : data.books || []);
-  } catch (error) {
-    console.error("Failed to fetch books:", error);
-    toast.error("Failed to load books");
-  }
-};
+  const fetchBooks = async () => {
+    try {
+      const data = await getBooks();
+      setBooks(Array.isArray(data) ? data : data.books || []);
+    } catch (error) {
+      console.error("Failed to fetch books:", error);
+      toast.error("Failed to load books");
+    }
+  };
 
 
   const handleDelete = async (id) => {
@@ -35,52 +35,58 @@ const fetchBooks = async () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-4 bg-white shadow rounded-lg">
-      <h2 className="text-2xl font-bold mb-4 text-orange-600 text-center">
+    <div className="max-w-5xl mx-auto p-4 md:p-6 bg-white shadow-md rounded-2xl">
+      <h2 className="text-2xl font-bold mb-6 text-yellow-600 text-center">
         Admin Book Management
       </h2>
 
       {books.length === 0 ? (
-        <p className="text-center text-gray-500">No books found.</p>
+        <p className="text-center text-gray-500 py-10">No books found.</p>
       ) : (
-        <table className="w-full border border-gray-300">
-          <thead className="bg-orange-100">
-            <tr>
-              <th className="p-2 border">Title</th>
-              <th className="p-2 border">Author</th>
-              <th className="p-2 border">Price</th>
-              <th className="p-2 border">Stock</th>
-              <th className="p-2 border">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map((b) => (
-              <tr key={b._id}>
-                <td className="p-2 border">{b.title}</td>
-                <td className="p-2 border">{b.author}</td>
-                <td className="p-2 border">{b.price}</td>
-                <td className="p-2 border">{b.stock}</td>
-                <td className="p-2 border text-center">
-                  <button
-                    onClick={() => handleEdit(b)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(b._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="overflow-x-auto rounded-xl border border-gray-200">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-yellow-50 text-yellow-800">
+              <tr>
+                <th className="p-3 font-semibold border-b">Title</th>
+                <th className="p-3 font-semibold border-b">Author</th>
+                <th className="p-3 font-semibold border-b">Price</th>
+                <th className="p-3 font-semibold border-b">Stock</th>
+                <th className="p-3 font-semibold border-b text-center">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {books.map((b) => (
+                <tr key={b._id} className="hover:bg-gray-50 transition-colors">
+                  <td className="p-3 text-sm font-medium">{b.title}</td>
+                  <td className="p-3 text-sm text-gray-600">{b.author}</td>
+                  <td className="p-3 text-sm font-bold text-yellow-700">Rs {b.price}</td>
+                  <td className="p-3 text-sm">
+                    <span className={`px-2 py-1 rounded-full text-[10px] font-bold ${b.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                      {b.stock > 0 ? `In Stock (${b.stock})` : 'Out of Stock'}
+                    </span>
+                  </td>
+                  <td className="p-3 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <button
+                        onClick={() => handleEdit(b)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(b._id)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition shadow-sm"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
-
-
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaBookOpen, FaFileAlt, FaShoppingCart, FaChartBar, FaHome, FaList, FaTimes } from "react-icons/fa";
 
-const Sidebar = ({ open = false, setOpen = () => {} }) => {
+const Sidebar = ({ open = false, setOpen = () => { } }) => {
   const { pathname } = useLocation();
 
   const links = [
@@ -11,7 +11,7 @@ const Sidebar = ({ open = false, setOpen = () => {} }) => {
     { path: "booklist", label: "Book List", icon: <FaList size={18} /> },
     { path: "/admin/blogs", label: "Add Blog", icon: <FaFileAlt size={18} /> },
     { path: "/admin/orders", label: "Orders", icon: <FaShoppingCart size={18} /> },
-    {path : "blogslist", label: "Blog List", icon: <FaList size={18} /> },
+    { path: "blogslist", label: "Blog List", icon: <FaList size={18} /> },
   ];
 
   return (
@@ -27,9 +27,8 @@ const Sidebar = ({ open = false, setOpen = () => {} }) => {
             <li key={path}>
               <Link
                 to={path}
-                className={`flex items-center gap-2 p-2 rounded-md ${
-                  pathname === path ? "bg-orange-200 text-orange-800 font-semibold" : "hover:bg-gray-200"
-                }`}
+                className={`flex items-center gap-2 p-2 rounded-md ${pathname === path ? "bg-yellow-200 text-yellow-800 font-semibold" : "hover:bg-gray-200"
+                  }`}
               >
                 {icon}
                 {label}
@@ -60,9 +59,8 @@ const Sidebar = ({ open = false, setOpen = () => {} }) => {
                   <Link
                     to={path}
                     onClick={() => setOpen(false)}
-                    className={`flex items-center gap-2 p-2 rounded-md ${
-                      pathname === path ? "bg-orange-200 text-orange-800 font-semibold" : "hover:bg-gray-200"
-                    }`}
+                    className={`flex items-center gap-2 p-2 rounded-md ${pathname === path ? "bg-yellow-200 text-yellow-800 font-semibold" : "hover:bg-gray-200"
+                      }`}
                   >
                     {icon}
                     {label}

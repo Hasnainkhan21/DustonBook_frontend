@@ -39,8 +39,8 @@ const Orders = () => {
     try {
       return JSON.parse(
         localStorage.getItem("user") ||
-          localStorage.getItem("profile") ||
-          "null"
+        localStorage.getItem("profile") ||
+        "null"
       );
     } catch {
       return null;
@@ -132,7 +132,7 @@ const Orders = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 min-h-screen bg-gray-50">
-      <h1 className="text-4xl font-bold mb-8 text-[#A72703]">📦 My Orders</h1>
+      <h1 className="text-4xl font-bold mb-8 text-yellow-600">📦 My Orders</h1>
 
       {/* Confirmation Dialog */}
       <Dialog open={confirmOpen} onClose={handleCancelDelete}>
@@ -176,7 +176,7 @@ const Orders = () => {
             return (
               <div
                 key={order._id}
-                className="bg-white p-5 rounded-lg shadow border-l-4 border-[#A72703] hover:shadow-lg transition"
+                className="bg-white p-5 rounded-lg shadow border-l-4 border-yellow-500 hover:shadow-lg transition"
               >
                 {/* Order Header - Compact */}
                 <div className="flex justify-between items-center mb-3">
@@ -191,9 +191,8 @@ const Orders = () => {
 
                   <div className="flex items-center gap-2">
                     <span
-                      className={`px-3 py-1 text-xs rounded text-white font-semibold ${
-                        statusColors[order.status] || "bg-gray-600"
-                      }`}
+                      className={`px-3 py-1 text-xs rounded text-white font-semibold ${statusColors[order.status] || "bg-gray-600"
+                        }`}
                     >
                       {order.status}
                     </span>
@@ -214,11 +213,10 @@ const Orders = () => {
                 {/* Cancel Window Info - Only show if Pending */}
                 {order.status === "Pending" && (
                   <div
-                    className={`mb-3 p-2 rounded flex items-center gap-2 text-xs ${
-                      isCancellable
+                    className={`mb-3 p-2 rounded flex items-center gap-2 text-xs ${isCancellable
                         ? "bg-yellow-100 border border-yellow-300"
                         : "bg-red-100 border border-red-300"
-                    }`}
+                      }`}
                   >
                     <FaClock
                       className={isCancellable ? "text-yellow-600" : "text-red-600"}
@@ -251,7 +249,7 @@ const Orders = () => {
                           <span className="truncate">
                             {item.book?.title || item.title}
                           </span>
-                          <span className="text-[#A72703] font-semibold ml-2">
+                          <span className="text-yellow-600 font-semibold ml-2">
                             ×{item.quantity}
                           </span>
                         </div>
@@ -266,7 +264,7 @@ const Orders = () => {
                 <div className="bg-gray-50 p-3 rounded border border-gray-200 flex justify-between items-center">
                   <span className="text-gray-700 font-semibold">Total:</span>
                   <div className="text-right">
-                    <p className="text-[#A72703] font-bold">
+                    <p className="text-yellow-600 font-bold">
                       Rs. {finalTotal.toFixed(2)}
                     </p>
                     <p className="text-xs text-gray-500">

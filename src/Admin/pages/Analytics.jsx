@@ -39,10 +39,10 @@ const Analytics = () => {
   const { totalUsers, totalBooks, totalOrders, totalAdmins, topBooks, blogs } = data || {};
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 md:p-6 space-y-6">
       <h1 className="text-2xl font-bold">Analytics</h1>
 
-      <div className="flex gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         <StatCard label="Users" value={totalUsers ?? 0} />
         <StatCard label="Books" value={totalBooks ?? 0} />
         <StatCard label="Orders" value={totalOrders ?? 0} />
@@ -70,7 +70,7 @@ const Analytics = () => {
                       <div className="text-xs text-gray-500">Sold: {b.totalSold}</div>
                       <div className="h-2 bg-gray-100 rounded mt-2 overflow-hidden">
                         <div
-                          className="h-2 bg-orange-500"
+                          className="h-2 bg-yellow-500"
                           style={{ width: `${(b.totalSold / max) * 100}%` }}
                         />
                       </div>

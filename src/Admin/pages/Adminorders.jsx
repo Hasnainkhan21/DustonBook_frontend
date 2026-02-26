@@ -142,8 +142,8 @@ const Adminorders = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 text-white">
-      <h1 className="text-3xl font-bold text-[#FCB53B] mb-6">
+    <div className="p-4 md:p-6 text-white min-h-screen">
+      <h1 className="text-2xl md:text-3xl font-bold text-yellow-500 mb-6">
         Manage Orders
       </h1>
 
@@ -159,29 +159,29 @@ const Adminorders = () => {
         </DialogActions>
       </Dialog>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left bg-[#1a1a1a] border border-[#A72703] rounded-lg overflow-hidden">
-          <thead className="bg-[#A72703]">
+      <div className="overflow-x-auto rounded-xl border border-yellow-900/30 shadow-2xl">
+        <table className="w-full text-left bg-[#1a1a1a] border-collapse min-w-[650px]">
+          <thead className="bg-yellow-600">
             <tr>
-              <th className="p-3">Order</th>
-              <th className="p-3">User</th>
-              <th className="p-3">Date</th>
-              <th className="p-3">Amount</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Expand</th>
+              <th className="p-3 text-sm font-bold uppercase tracking-wider">Order</th>
+              <th className="p-3 text-sm font-bold uppercase tracking-wider">User</th>
+              <th className="p-3 text-sm font-bold uppercase tracking-wider">Date</th>
+              <th className="p-3 text-sm font-bold uppercase tracking-wider">Amount</th>
+              <th className="p-3 text-sm font-bold uppercase tracking-wider">Status</th>
+              <th className="p-3 text-sm font-bold uppercase tracking-wider text-center">Actions</th>
             </tr>
           </thead>
 
-          <tbody className="bg-[#131313] divide-y divide-gray-700">
+          <tbody className="bg-[#131313] divide-y divide-gray-800">
             {loading ? (
               <tr>
-                <td colSpan="6" className="p-6 text-center text-gray-400">
+                <td colSpan="6" className="p-10 text-center text-gray-500 italic">
                   Loading orders...
                 </td>
               </tr>
             ) : orders.length === 0 ? (
               <tr>
-                <td colSpan="6" className="p-6 text-center text-gray-400">
+                <td colSpan="6" className="p-10 text-center text-gray-500 italic">
                   No orders found.
                 </td>
               </tr>
@@ -189,22 +189,21 @@ const Adminorders = () => {
               orders.map((order) => (
                 <React.Fragment key={order._id}>
                   {/* MAIN ROW */}
-                  <tr className="hover:bg-[#242424]">
-                    <td className="p-3 font-semibold">#{order._id?.slice(-6)}</td>
+                  <tr className="hover:bg-[#1e1e1e] transition-colors">
+                    <td className="p-3 text-sm font-mono text-yellow-500">#{order._id?.slice(-6)}</td>
 
                     <td className="p-3">
-                      {order.user?.name || "Unknown"}
-                      <br />
-                      <span className="text-sm text-gray-400">
+                      <div className="text-sm font-bold">{order.user?.name || "Unknown"}</div>
+                      <div className="text-[10px] text-gray-500 truncate max-w-[120px]">
                         {order.user?.email}
-                      </span>
+                      </div>
                     </td>
 
-                    <td className="p-3">
+                    <td className="p-3 text-xs text-gray-400">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </td>
 
-                    <td className="p-3 text-[#FCB53B] font-bold">
+                    <td className="p-3 text-sm text-yellow-500 font-bold">
                       Rs {order.totalAmount}
                     </td>
 
@@ -214,7 +213,7 @@ const Adminorders = () => {
                         onChange={(e) =>
                           handleStatusChange(order._id, e.target.value)
                         }
-                        className={`px-3 py-1 rounded font-semibold border-2 transition-all ${getSelectColor(
+                        className={`text-xs px-2 py-1 rounded-full font-bold border outline-none cursor-pointer transition-all ${getSelectColor(
                           order.status
                         )}`}
                       >
@@ -226,88 +225,65 @@ const Adminorders = () => {
                     </td>
 
                     <td className="p-3">
-                      <button
-                        onClick={() => toggleExpand(order._id)}
-                        className="text-[#FCB53B] hover:underline font-semibold mr-3"
-                      >
-                        {expanded === order._id ? "Hide" : "View"}
-                      </button>
-
-                      {/* use dialog trigger instead of window.confirm */}
-                      <button
-                        onClick={() => openDeleteConfirm(order._id)}
-                        className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-white font-semibold text-sm"
-                      >
-                        Delete
-                      </button>
+                      <div className="flex items-center justify-center gap-2">
+                        <button
+                          onClick={() => toggleExpand(order._id)}
+                          className="text-white bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-xs font-bold transition"
+                        >
+                          {expanded === order._id ? "Hide" : "View"}
+                        </button>
+                        <button
+                          onClick={() => openDeleteConfirm(order._id)}
+                          className="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg text-white font-bold text-xs transition"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
 
                   {/* EXPANDED SECTION */}
                   {expanded === order._id && (
-                    <tr className="bg-[#242424]">
-                      <td colSpan="6" className="p-5">
-                        <div className="mb-4 p-3 bg-[#1a1a1a] rounded-lg border border-[#A72703]">
-                          <h3 className="text-lg font-bold mb-3 text-[#FCB53B]">
-                            📍 Shipping Details
-                          </h3>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-200">
-                            <p>
-                              <strong>Name:</strong>{" "}
-                              {order.shippingDetails?.fullName || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Phone:</strong>{" "}
-                              {order.shippingDetails?.phone || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Address:</strong>{" "}
-                              {order.shippingDetails?.address || "N/A"}
-                            </p>
-                            <p>
-                              <strong>City:</strong>{" "}
-                              {order.shippingDetails?.city || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Postal:</strong>{" "}
-                              {order.shippingDetails?.postalCode || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Country:</strong>{" "}
-                              {order.shippingDetails?.country || "N/A"}
-                            </p>
+                    <tr className="bg-[#1e1e1e]">
+                      <td colSpan="6" className="p-4 md:p-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                          <div className="p-4 bg-[#131313] rounded-xl border border-yellow-900/40">
+                            <h3 className="text-sm font-bold mb-4 text-yellow-500 flex items-center gap-2">
+                              <span>📍</span> Shipping Details
+                            </h3>
+                            <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-xs">
+                              <p className="text-gray-500">Name:</p>
+                              <p className="text-gray-200">{order.shippingDetails?.fullName || "N/A"}</p>
+                              <p className="text-gray-500">Phone:</p>
+                              <p className="text-gray-200">{order.shippingDetails?.phone || "N/A"}</p>
+                              <p className="text-gray-500">Address:</p>
+                              <p className="text-gray-200 break-words">{order.shippingDetails?.address || "N/A"}</p>
+                              <p className="text-gray-500">City:</p>
+                              <p className="text-gray-200">{order.shippingDetails?.city || "N/A"}</p>
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="p-3 bg-[#1a1a1a] rounded-lg border border-[#A72703] relative">
-                          <h3 className="text-lg font-bold text-[#FCB53B] mb-3">
-                            📚 Order Items
-                          </h3>
-
-                          <ul className="space-y-2">
-                            {order.items && order.items.length > 0 ? (
-                              order.items.map((item) => (
-                                <li
-                                  key={
-                                    item._id ||
-                                    item.book?._id ||
-                                    `${order._id}-${item.book?._id}`
-                                  }
-                                  className="p-2 bg-[#131313] rounded flex justify-between text-gray-200"
-                                >
-                                  <span>
-                                    {item.book?.title || item.title}
-                                  </span>
-                                  <span className="text-[#FCB53B] font-semibold">
-                                    Qty: {item.quantity}
-                                  </span>
-                                </li>
-                              ))
-                            ) : (
-                              <li className="text-gray-400">No items</li>
-                            )}
-                          </ul>
+                          <div className="p-4 bg-[#131313] rounded-xl border border-yellow-900/40">
+                            <h3 className="text-sm font-bold mb-4 text-yellow-500 flex items-center gap-2">
+                              <span>📚</span> Items Summary
+                            </h3>
+                            <div className="space-y-2 max-h-[150px] overflow-y-auto pr-2 custom-scrollbar">
+                              {order.items && order.items.length > 0 ? (
+                                order.items.map((item, i) => (
+                                  <div key={i} className="flex justify-between items-center text-xs p-2 bg-[#1a1a1a] rounded-lg">
+                                    <span className="text-gray-300 truncate max-w-[200px]">
+                                      {item.book?.title || item.title}
+                                    </span>
+                                    <span className="text-yellow-500 font-bold shrink-0">
+                                      x{item.quantity}
+                                    </span>
+                                  </div>
+                                ))
+                              ) : (
+                                <p className="text-xs text-gray-500 italic">No items found</p>
+                              )}
+                            </div>
+                          </div>
                         </div>
                       </td>
                     </tr>

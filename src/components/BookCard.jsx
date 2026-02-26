@@ -49,10 +49,10 @@ const BookCard = ({ book }) => {
 
   return (
     <>
-      <article className="relative bg-gradient-to-br from-white via-orange-50 to-white rounded-3xl border border-transparent hover:border-[#FFD4A6] shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-250 overflow-hidden flex flex-col">
+      <article className="relative bg-gradient-to-br from-white via-yellow-50 to-white rounded-2xl md:rounded-3xl border border-transparent hover:border-yellow-400 shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-250 overflow-hidden flex flex-col h-full">
         {/* Image area */}
         <div
-          className="relative h-56 md:h-64 overflow-hidden bg-gray-50 cursor-pointer"
+          className="relative h-40 sm:h-56 md:h-64 overflow-hidden bg-gray-50 cursor-pointer"
           onClick={() => setOpen(true)}
           onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setOpen(true)}
           role="button"
@@ -66,55 +66,48 @@ const BookCard = ({ book }) => {
           />
 
           {/* Top-left badges */}
-          <div className="absolute top-3 left-3 flex flex-col gap-2 pointer-events-none">
+          <div className="absolute top-2 left-2 flex flex-col gap-1 pointer-events-none">
             {book.stock === 0 ? (
-              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-red-600 text-white shadow-sm">Out of stock</span>
+              <span className="text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full bg-red-600 text-white shadow-sm">Out of stock</span>
             ) : book.stock <= 3 ? (
-              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-yellow-400 text-black shadow-sm">Low stock</span>
+              <span className="text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full bg-yellow-400 text-black shadow-sm">Low stock</span>
             ) : null}
           </div>
 
           {/* Price badge */}
-          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-md rounded-full px-3 py-1 font-extrabold text-[#A72703] shadow">
-            Rs {Number(book.price || 0).toFixed(2)}
+          <div className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-md rounded-full px-2 sm:px-3 py-0.5 sm:py-1 font-bold sm:font-extrabold text-[#A72703] shadow text-xs sm:text-sm">
+            Rs {Number(book.price || 0).toFixed(0)}
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-4 md:p-5 flex-1 flex flex-col">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1">
-              <h3 className="text-md md:text-lg font-bold text-[#2b2b2b] leading-tight truncate">
+        <div className="p-3 sm:p-4 md:p-5 flex-1 flex flex-col">
+          <div className="flex items-start justify-between gap-1 sm:gap-3">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm md:text-lg font-bold text-[#2b2b2b] leading-tight truncate">
                 {book.title}
               </h3>
-              <p className="text-xs text-gray-500 mt-1">{book.author}</p>
-            </div>
-
-            <div className="flex flex-col items-end">
-              <span className="text-xs text-gray-400 mt-1">{book.category}</span>
+              <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 truncate">{book.author}</p>
             </div>
           </div>
 
-          <div className="flex items-center justify-between mt-4 gap-3">
-            <div className="flex items-center gap-2">
-              <span className="text-xs px-2 py-1 bg-gray-100 rounded-full text-gray-700 border border-gray-200">
-                {book.stock > 0 ? `In stock: ${book.stock}` : "Sold out"}
+          <div className="mt-auto pt-3">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[10px] text-gray-400 font-medium">
+                {book.stock > 0 ? `${book.stock} in stock` : "Sold out"}
               </span>
-            </div>
 
-            <div className="flex items-center gap-2">
               <button
                 onClick={handleAddToCart}
                 disabled={book.stock === 0 || isAdding}
-                className={`inline-flex items-center gap-2 px-3 py-2 rounded-full font-semibold text-sm transition shadow ${
-                  book.stock === 0 || isAdding
-                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                    : "bg-gradient-to-tr from-[#ffa200] to-[#ffb74a] text-black hover:brightness-95"
-                }`}
+                className={`flex items-center justify-center p-2 sm:px-3 sm:py-2 rounded-full font-semibold transition shadow ${book.stock === 0 || isAdding
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-yellow-500 text-black hover:bg-yellow-600 active:scale-95 transition"
+                  }`}
                 title={book.stock === 0 ? "Out of stock" : "Add to cart"}
               >
-                <FaCartPlus className="w-4 h-4" />
-                <span className="hidden sm:inline">{isAdding ? "Adding..." : "Add"}</span>
+                <FaCartPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline ml-2 text-xs">{isAdding ? "Adding..." : "Add"}</span>
               </button>
             </div>
           </div>
