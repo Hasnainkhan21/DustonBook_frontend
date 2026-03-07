@@ -116,6 +116,11 @@ const Orders = () => {
   };
 
   const statusColors = {
+    pending: "bg-yellow-600",
+    processing: "bg-blue-600",
+    shiped: "bg-purple-600",
+    delivered: "bg-green-600",
+    // Fallbacks for display
     Pending: "bg-yellow-600",
     Processing: "bg-blue-600",
     Shipped: "bg-purple-600",
@@ -166,7 +171,7 @@ const Orders = () => {
         <div className="space-y-4">
           {orders.map((order) => {
             const isCancellable =
-              canCancelOrder(order.createdAt) && order.status === "Pending";
+              canCancelOrder(order.createdAt) && (order.status?.toLowerCase() === "pending");
             const hoursRemaining = getHoursRemaining(order.createdAt);
 
             const subtotal = order.totalAmount;
@@ -210,12 +215,12 @@ const Orders = () => {
                   </div>
                 </div>
 
-                {/* Cancel Window Info - Only show if Pending */}
-                {order.status === "Pending" && (
+                {/* Cancel Window Info - Only show if pending */}
+                {order.status?.toLowerCase() === "pending" && (
                   <div
                     className={`mb-3 p-2 rounded flex items-center gap-2 text-xs ${isCancellable
-                        ? "bg-yellow-100 border border-yellow-300"
-                        : "bg-red-100 border border-red-300"
+                      ? "bg-yellow-100 border border-yellow-300"
+                      : "bg-red-100 border border-red-300"
                       }`}
                   >
                     <FaClock

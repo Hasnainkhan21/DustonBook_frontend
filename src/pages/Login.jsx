@@ -52,8 +52,8 @@ const Login = () => {
       style={{ backgroundImage: `url(${bg})` }}
     >
       <div className="bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg w-full max-w-md space-y-4">
-        <h2 className="text-3xl font-bold text-center text-[#BF092F]">
-          Login
+        <h2 className="text-2xl text-center text-[#BF092F]">
+          Login to Continue
         </h2>
 
         {showAlert && (
@@ -86,7 +86,7 @@ const Login = () => {
               type="password"
               {...register("password", {
                 required: "Password is required",
-                minLength: { value: 6, message: "Min length is 6" },
+                minLength: { value: 8, message: "Min length is 8" },
               })}
               className="w-full border border-gray-300 px-4 py-2 rounded-md ring-1  ring-black focus:ring-[#BF092F] outline-none"
             />

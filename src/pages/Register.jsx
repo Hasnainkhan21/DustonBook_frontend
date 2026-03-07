@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { registerUser } from "../Services/authService";
 import { Alert } from "@mui/material";
 import bg from "../assets/authbg.jpg";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const {
@@ -27,7 +27,7 @@ const Register = () => {
       reset();
       setTimeout(() => {
         setShowAlert(false);
-        navigate("/login"); 
+        navigate("/login");
       }, 1500);
     } catch (error) {
       const msg =
@@ -63,7 +63,10 @@ const Register = () => {
             <label className="block text-gray-700 mb-1">Name</label>
             <input
               type="text"
-              {...register("name", { required: "Name is required" })}
+              {...register("name", {
+                required: "Name is required",
+                minLength: { value: 3, message: "Username must be at least 3 characters long" }
+              })}
               className="w-full border border-gray-300  px-4 py-2 rounded-md ring-1  ring-black focus:ring-[#BF092F] outline-none"
             />
             {errors.name && (
@@ -94,7 +97,7 @@ const Register = () => {
               type="password"
               {...register("password", {
                 required: "Password is required",
-                minLength: { value: 6, message: "Min length is 6" },
+                minLength: { value: 8, message: "Password must be at least 8 characters long" },
               })}
               className="w-full border border-gray-300 px-4 py-2 rounded-md ring-1  ring-black focus:ring-[#BF092F] outline-none"
             />
