@@ -48,7 +48,7 @@ const Orders = () => {
   })();
   const userId = user?.result?._id || user?._id || user?.id || null;
 
-  // Real-time listener
+  // Real-time listener for order status updates
   useEffect(() => {
     const socket = io("http://localhost:5000");
 
