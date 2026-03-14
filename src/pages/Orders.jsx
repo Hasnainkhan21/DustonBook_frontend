@@ -98,7 +98,7 @@ const Orders = () => {
     setConfirmOpen(false);
   };
 
-  // Confirm delete
+  // Confirm delete and call API to cancel order 
   const handleConfirmDelete = async () => {
     if (!deletingOrderId) return;
 
