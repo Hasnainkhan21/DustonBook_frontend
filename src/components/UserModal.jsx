@@ -1,37 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import { FaUser } from "react-icons/fa";
-import { getMe, logoutUser } from "../Services/authService";
+import { logoutUser } from "../Services/authService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 350,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  borderRadius: 3,
+  p: 4,
+  textAlign: "center",
+};
 
 const UserModal = ({ open, handleClose }) => {
-  const [user, setUser] = useState(null);
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-
-  // Fetch user info when modal opens
-  useEffect(() => {
-    if (open) {
-      const fetchUser = async () => {
-        try {
-          const data = await getMe(); 
-          setUser(data);
-        } catch (err) {
-          console.log("User not logged in");
-          setUser(null);
-        }
-      };
-      fetchUser();
-    }
-  }, [open]);
 
   const handleLogout = async () => {
     try {
       await logoutUser();
-      setUser(null);
+    } catch {
+      // Ignore logout errors — still clear local state
+    } finally {
+      logout();
       handleClose();
       navigate("/");
-    } catch (err) {
-      console.error("Logout failed:", err);
     }
   };
 
@@ -41,24 +40,11 @@ const UserModal = ({ open, handleClose }) => {
   };
 
   return (
-    <Modal open={open} onClose={handleClose} aria-labelledby="user-modal">
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 350,
-          bgcolor: "background.paper",
-          boxShadow: 24,
-          borderRadius: 3,
-          p: 4,
-          textAlign: "center",
-        }}
-      >
+    <Modal open={open} onClose={handleClose} aria-labelledby="user-modal-title">
+      <Box sx={modalStyle}>
         <div className="flex flex-row gap-2 items-center justify-center mb-2">
           <FaUser size={24} />
-          <Typography variant="h6">
+          <Typography id="user-modal-title" variant="h6">
             {user ? user.name : "Guest"}
           </Typography>
         </div>
@@ -71,7 +57,7 @@ const UserModal = ({ open, handleClose }) => {
           <Button
             color="error"
             variant="contained"
-            sx={{ width: "100%" }}
+            fullWidth
             onClick={handleLogout}
           >
             Logout
@@ -80,7 +66,7 @@ const UserModal = ({ open, handleClose }) => {
           <Button
             color="primary"
             variant="contained"
-            sx={{ width: "100%" }}
+            fullWidth
             onClick={handleLoginRedirect}
           >
             Login

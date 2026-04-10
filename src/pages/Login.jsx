@@ -4,46 +4,42 @@ import { loginUser } from "../Services/authService";
 import { Alert } from "@mui/material";
 import bg from "../assets/authbg.jpg";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // Adjust the import based on your project structure
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   const [alertMsg, setAlertMsg] = useState("");
   const [alertType, setAlertType] = useState("error");
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
-  const { setUser, refreshUser, login } = useAuth(); // Destructure login function from useAuth
+  const { login } = useAuth();
+
+  const showMessage = (msg, type = "error") => {
+    setAlertMsg(msg);
+    setAlertType(type);
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 4000);
+  };
 
   const onSubmit = async (data) => {
     try {
+      // loginUser now returns res.data directly (from authService cleanup)
       const res = await loginUser(data);
-
-      // ✅ INSTANT AUTH UPDATE so protected routes work immediately
-      login(res?.data?.user || res?.data || res);
-
-      setAlertMsg("Login successful!");
-      setAlertType("success");
-      setShowAlert(true);
+      // Support various server response shapes
+      login(res?.user || res);
+      showMessage("Login successful!", "success");
       reset();
-
-      // optional: keep if server uses cookies and you want to re-fetch authoritative user
-      // await refreshUser();
-
       navigate("/");
     } catch (error) {
-      const msg =
-        error?.response?.data?.message || error?.message || "Login failed!";
-      setAlertMsg(msg);
-      setAlertType("error");
-      setShowAlert(true);
+      const msg = error?.response?.data?.message || error?.message || "Login failed!";
+      showMessage(msg, "error");
     }
-    setTimeout(() => setShowAlert(false), 4000);
   };
 
   return (
@@ -52,9 +48,9 @@ const Login = () => {
       style={{ backgroundImage: `url(${bg})` }}
     >
       <div className="bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg w-full max-w-md space-y-4">
-        <h2 className="text-2xl text-center text-[#BF092F]">
+        <h1 className="text-2xl text-center text-[#BF092F] font-bold">
           Login to Continue
-        </h2>
+        </h1>
 
         {showAlert && (
           <Alert severity={alertType} sx={{ mb: 2 }}>
@@ -62,53 +58,55 @@ const Login = () => {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
           {/* Email */}
           <div>
-            <label className="block text-gray-700 mb-1">Email</label>
+            <label className="block text-gray-700 mb-1" htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
+              autoComplete="email"
               {...register("email", {
                 required: "Email is required",
-                pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
+                pattern: { value: /^\S+@\S+\.\S+$/, message: "Invalid email" },
               })}
-              className="w-full border border-gray-300 px-4 py-2 rounded-md ring-1  ring-black focus:ring-[#BF092F] outline-none"
+              className="w-full border border-gray-300 px-4 py-2 rounded-md ring-1 ring-gray-300 focus:ring-[#BF092F] outline-none transition"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
+              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
             )}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-gray-700 mb-1">Password</label>
+            <label className="block text-gray-700 mb-1" htmlFor="password">Password</label>
             <input
+              id="password"
               type="password"
+              autoComplete="current-password"
               {...register("password", {
                 required: "Password is required",
-                minLength: { value: 8, message: "Min length is 8" },
+                minLength: { value: 8, message: "Minimum 8 characters" },
               })}
-              className="w-full border border-gray-300 px-4 py-2 rounded-md ring-1  ring-black focus:ring-[#BF092F] outline-none"
+              className="w-full border border-gray-300 px-4 py-2 rounded-md ring-1 ring-gray-300 focus:ring-[#BF092F] outline-none transition"
             />
             {errors.password && (
-              <p className="text-red-500 text-sm">{errors.password.message}</p>
+              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
             )}
           </div>
 
           <button
+            id="login-submit"
             type="submit"
-            className="w-full bg-[#BF092F] text-white py-2 rounded-md hover:bg-[#a30828] transition"
+            disabled={isSubmitting}
+            className="w-full bg-[#BF092F] text-white py-2 rounded-md hover:bg-[#a30828] transition disabled:opacity-60"
           >
-            Login
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
 
-          {/* Register link */}
           <p className="text-center text-sm text-gray-700 mt-3">
-            Don’t have an account?{" "}
-            <Link
-              to="/register"
-              className="text-[#BF092F] font-semibold hover:underline"
-            >
+            Don't have an account?{" "}
+            <Link to="/register" className="text-[#BF092F] font-semibold hover:underline">
               Register here
             </Link>
           </p>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import api from "../Services/api";
 import { useAuth } from "./AuthContext";
 
@@ -8,29 +8,28 @@ export const CartProvider = ({ children }) => {
   const [cartCount, setCartCount] = useState(0);
   const { user } = useAuth();
 
-  // Fetch cart count from backend
-  const loadCart = async () => {
+  const loadCart = useCallback(async () => {
     if (!user) {
       setCartCount(0);
       return;
     }
     try {
       const res = await api.get("/cart");
-      const items = res.data.items || [];
+      const items = res.data?.items || [];
       const count = items.reduce((sum, item) => sum + item.quantity, 0);
       setCartCount(count);
     } catch (error) {
-      // Silently fail or log only if it's not a 401/404
+      // Silently ignore auth/empty-cart errors; warn on real failures
       if (error.response?.status !== 401 && error.response?.status !== 404) {
         console.warn("Cart load failed:", error.message);
       }
       setCartCount(0);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     loadCart();
-  }, [user]);
+  }, [loadCart]);
 
   return (
     <CartContext.Provider value={{ cartCount, loadCart }}>

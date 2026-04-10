@@ -1,11 +1,6 @@
-import api from "../Services/api";
+import api from "./api";
 
 export const getAnalytics = async () => {
-  try {
-    const response = await api.get("/analytics/analytics");
-    return response.data;
-  } catch (error) {
-    console.error("Analytics error:", error);
-    throw error;
-  } 
+  const { data } = await api.get("/analytics/analytics");
+  return data;
 };
